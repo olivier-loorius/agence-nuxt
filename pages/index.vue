@@ -1,20 +1,24 @@
-<script setup lang="ts">
-import { Button } from '~/components/ui/button'
-import { Rocket } from 'lucide-vue-next'
-</script>
-
 <template>
-  <div class="p-10">
-    <h1 class="text-3xl font-bold text-green-500">
-      TITRE DE TEST TAILWIND
-    </h1>
-    <p>Si ce titre est gros et vert, Tailwind est installé.</p>
-
-    <h2 class="mt-4 text-2xl font-bold">Test de Shadcn :</h2>
-
-    <Button class="mt-2">
-      <Rocket class="mr-2 h-4 w-4" />
-      Bouton Shadcn (enfin !)
-    </Button>
+  <div class="relative">
+    <!-- Sections -->
+    <main class="snap-y snap-mandatory h-screen overflow-y-scroll scroll-smooth">
+      <section class="snap-start h-screen"><Hero1 /></section>
+      <section class="snap-start h-screen"><Hero2 /></section>
+      <section class="snap-start h-screen"><Hero3 /></section>
+      <section class="snap-start h-screen"><Hero4 /></section>
+    </main>
   </div>
 </template>
+
+<script setup lang="ts">
+import Hero1 from '~/components/sections/Hero1.vue'
+import Hero2 from '~/components/sections/Hero2.vue'
+import Hero3 from '~/components/sections/Hero3.vue'
+import Hero4 from '~/components/sections/Hero4.vue'
+</script>
+
+<style scoped>
+main::-webkit-scrollbar {
+  display: none;
+}
+</style>

@@ -10,8 +10,11 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@vueuse/motion": "^3.0.3",
+    "better-sqlite3": "^12.4.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "gsap": "^3.13.0",
     "lucide-vue-next": "^0.552.0",
     "nuxt": "^4.2.0",
     "radix-vue": "^1.9.17",

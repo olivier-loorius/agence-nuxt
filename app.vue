@@ -1,5 +1,12 @@
+<script setup lang="ts"></script>
+
 <template>
-  <div>
+  <!-- Layout global avec rendu des pages -->
+  <NuxtLayout>
     <NuxtPage />
-  </div>
+  </NuxtLayout>
 </template>
+
+<style>
+@import "@/assets/css/tailwind.css";
+</style>
