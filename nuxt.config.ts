@@ -2,10 +2,11 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
 
   modules: [
+    '@vueuse/motion/nuxt',
     '@nuxtjs/tailwindcss',
     '@nuxt/content', 
     '@nuxt/image',   
-    'nuxt-seo'       
+    // 'nuxt-seo'       
   ],
 
   css: ['~/assets/css/tailwind.css'],
