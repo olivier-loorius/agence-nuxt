@@ -2,10 +2,10 @@
   <div class="relative">
     <!-- Sections -->
     <main class="snap-y snap-mandatory h-screen overflow-y-scroll scroll-smooth">
-      <section class="snap-start h-screen"><Hero1 /></section>
-      <section class="snap-start h-screen"><Hero2 /></section>
-      <section class="snap-start h-screen"><Hero3 /></section>
-      <section class="snap-start h-screen"><Hero4 /></section>
+      <section id="about" class="snap-start h-screen"><Hero1 /></section>
+      <section id="skills" class="snap-start h-screen"><Hero2 /></section>
+      <section id="work" class="snap-start h-screen"><Hero3 /></section>
+      <section id="contact" class="snap-start h-screen"><Hero4 /></section>
     </main>
   </div>
 </template>

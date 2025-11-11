@@ -1,0 +1,11 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "about": "Mon parcours",
+    "approach": "Ma démarche",
+    "projects": "Projets",
+    "cta": "Travaillons ensemble",
+    "logoAria": "Retour à l'accueil",
+    "menuAria": "Ouvrir le menu"
+  }
+}
