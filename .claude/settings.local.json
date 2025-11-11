@@ -10,7 +10,8 @@
       "Bash(tree:*)",
       "Bash(npm run dev)",
       "Bash(npm install:*)",
-      "Bash(timeout 30 npm run dev:*)"
+      "Bash(timeout 30 npm run dev:*)",
+      "Bash(git mv:*)"
     ],
     "deny": [],
     "ask": []

@@ -10,5 +10,5 @@
 
 <script setup lang="ts">
 import NavBar from '~/components/navigation/Navbar.vue'
-import FloatingCTA from '~/components/ui/FloatingCTA.vue'
+import FloatingCTA from '~/components/navigation/FloatingCTA.vue'
 </script>
