@@ -3,18 +3,20 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "nuxt build",
     "dev": "nuxt dev",
-    "generate": "nuxt generate",
+    "build": "nuxt build",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "generate": "nuxt generate",
+    "postinstall": "nuxt prepare",
+    "type-check": "nuxi prepare && vue-tsc --noEmit",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts",
+    "lint:fix": "npm run lint -- --fix"
   },
   "dependencies": {
+    "@nuxtjs/i18n": "^10.2.0",
     "@vueuse/motion": "^3.0.3",
-    "better-sqlite3": "^12.4.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "gsap": "^3.13.0",
     "lucide-vue-next": "^0.552.0",
     "nuxt": "^4.2.0",
     "radix-vue": "^1.9.17",

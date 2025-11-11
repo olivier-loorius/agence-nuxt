@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__ide__getDiagnostics",
+      "Bash(cat:*)",
+      "Bash(npm audit:*)",
+      "Bash(npm outdated:*)",
+      "Bash(npm run build:*)",
+      "Bash(nul)",
+      "Bash(tree:*)",
+      "Bash(npm run dev)",
+      "Bash(npm install:*)",
+      "Bash(timeout 30 npm run dev:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
