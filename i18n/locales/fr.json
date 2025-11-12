@@ -6,12 +6,87 @@
     "contact": "Contact",
     "cta": "Travaillons ensemble",
     "logoAria": "Retour à l'accueil",
-    "menuAria": "Ouvrir le menu"
+    "menuAria": "Ouvrir le menu",
+    "closeAria": "Fermer le modal"
   },
   "hero1": {
     "title": "Votre site web, pensé pour vous",
     "subtitle": "Pas de formules toutes faites. Chaque site est conçu sur-mesure, pour correspondre vraiment à votre activité et vos besoins.",
     "ctaPrimary": "Parlons de votre projet",
     "ctaSecondary": "Découvrir ma démarche"
+  },
+  "hero4": {
+    "title": "Parlons de votre projet",
+    "subtitle": "Remplissez ce formulaire et nous vous recontacterons rapidement pour discuter de vos besoins et trouver la meilleure solution pour votre projet."
+  },
+  "contact": {
+    "modal": {
+      "title": "Parlons de votre projet",
+      "subtitle": "Simple curiosité ou projet concret ? Les deux sont bienvenus ! Je vous explique comment on peut travailler ensemble, sans engagement.",
+      "ariaLabel": "Formulaire de contact",
+      "closeAria": "Fermer le formulaire de contact"
+    },
+    "form": {
+      "prenom": {
+        "label": "Prénom",
+        "placeholder": "John",
+        "error": "Le prénom doit contenir au moins 2 caractères"
+      },
+      "nom": {
+        "label": "Nom",
+        "placeholder": "Doe",
+        "error": "Le nom doit contenir au moins 2 caractères"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "john{'@'}example.com",
+        "error": "Veuillez entrer une adresse email valide"
+      },
+      "telephone": {
+        "label": "Téléphone",
+        "placeholder": "+33 6 12 34 56 78",
+        "error": "Numéro de téléphone invalide"
+      },
+      "typeProjet": {
+        "label": "Type de projet",
+        "placeholder": "Sélectionner une option",
+        "error": "Veuillez sélectionner un type de projet",
+        "options": {
+          "renseignement": "Renseignement",
+          "vitrine": "Site vitrine",
+          "sur_mesure": "Sur-mesure",
+          "refonte": "Refonte",
+          "autre": "Autre"
+        }
+      },
+      "activiteExiste": {
+        "label": "Je possède déjà une activité/entreprise",
+        "hint": "Cochez si vous avez déjà un business en place"
+      },
+      "activite": {
+        "label": "Décrivez votre activité",
+        "placeholder": "Décrivez votre secteur d'activité, vos services, etc.",
+        "error": "Veuillez décrire votre activité (au moins 10 caractères)"
+      },
+      "message": {
+        "label": "Détails de votre projet",
+        "placeholder": "Parlez-nous de votre projet, vos objectifs, vos attentes...",
+        "error": "Le message doit contenir au moins 20 caractères"
+      },
+      "autorisationRappel": {
+        "label": "Je consens à être recontacté par téléphone ou SMS",
+        "hint": "Nous pouvons vous appeler pour discuter de votre projet"
+      },
+      "rgpdConsent": {
+        "label": "J'accepte la politique de confidentialité et le traitement de mes données",
+        "hint": "Vos données seront traitées conformément à notre politique RGPD",
+        "error": "Vous devez accepter les conditions RGPD"
+      },
+      "submit": "Envoyer",
+      "submitting": "Envoi en cours...",
+      "requiredAria": "(obligatoire)",
+      "requiredIndicator": "requis",
+      "selectPlaceholder": "Sélectionner une option"
+    }
   }
 }

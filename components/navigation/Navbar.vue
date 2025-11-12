@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { Mail } from 'lucide-vue-next'
 import { useNavigation } from '~/composables/useNavigation'
 import { useScrollNav } from '~/composables/useScrollNav'
+import { useContactModal } from '~/composables/useContactModal'
 
 /**
  * Mobile menu state
@@ -27,6 +28,33 @@ const { t } = useI18n()
  */
 const { navLinks } = useNavigation()
 const { showNav } = useScrollNav()
+
+/**
+ * Contact modal composable
+ */
+const { openModal } = useContactModal()
+
+/**
+ * Smooth scroll to section
+ * Fallback method if NuxtLink hash navigation has issues
+ */
+const scrollToSection = (href: string) => {
+  const sectionId = href.slice(1) // Remove '#' prefix
+  const element = document.getElementById(sectionId)
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth' })
+    // Close mobile menu if open
+    isMobileMenuOpen.value = false
+  }
+}
+
+/**
+ * Handle CTA click: open modal and close menu
+ */
+const handleCtaClick = () => {
+  openModal()
+  isMobileMenuOpen.value = false
+}
 </script>
 
 <template>
@@ -65,6 +93,7 @@ const { showNav } = useScrollNav()
         :aria-label="`Aller à la section ${link.label}`"
         :class="['relative font-inter text-sm font-semibold text-black hover:text-black/60 transition-all duration-300 group focus:outline-2 focus:outline-primary focus:outline-offset-2 rounded px-2 flex items-center gap-2 hover:scale-105', link.href.slice(1) === activeSection ? 'border-b-4 border-primary text-black' : '']"
         :data-section="link.href.slice(1)"
+        @click="scrollToSection(link.href)"
       >
         <component :is="link.icon" class="w-4 h-4 transition-transform duration-300 group-hover:scale-110" />
         {{ link.label }}
@@ -146,7 +175,7 @@ const { showNav } = useScrollNav()
           :aria-label="`Aller à la section ${link.label}`"
           class="text-lg font-manrope font-semibold text-gray-900 hover:text-primary transition-all duration-300 py-2 px-3 rounded focus:outline-2 focus:outline-primary focus:outline-offset-2 flex items-center gap-2 hover:scale-105 hover:bg-gray-100"
           :data-section="link.href.slice(1)"
-          @click="isMobileMenuOpen = false"
+          @click="scrollToSection(link.href); isMobileMenuOpen = false"
           :style="{
             transitionDelay: isMobileMenuOpen ? `${i * 50}ms` : '0ms',
             opacity: isMobileMenuOpen ? 1 : 0,
@@ -167,7 +196,7 @@ const { showNav } = useScrollNav()
         :title="t('nav.cta')"
         class="mx-auto w-auto bg-primary text-black font-inter font-semibold text-base px-8 py-4 hover:bg-primary/90 transition-all duration-300 shadow-lg focus:outline-2 focus:outline-primary focus:outline-offset-2 rounded-lg flex items-center gap-2 hover:scale-105 hover:shadow-2xl"
         :style="{ borderRadius: '8px' }"
-        @click="isMobileMenuOpen = false"
+        @click="handleCtaClick"
       >
         <Mail class="w-5 h-5 transition-transform duration-300 hover:scale-110" />
         {{ t('nav.cta') }}
