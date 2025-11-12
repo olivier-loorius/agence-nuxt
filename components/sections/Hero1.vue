@@ -34,10 +34,15 @@
 
       <!-- CTAs -->
       <div class="flex flex-col md:flex-row gap-4 md:gap-6 justify-center items-center w-full md:w-auto">
-        <NuxtLink to="#contact" class="w-full md:w-auto px-8 py-4 rounded-lg font-semibold text-lg transition-all bg-black text-white hover:bg-black/80 border-2 border-transparent" aria-label="Accéder au formulaire de contact">
+        <button
+          type="button"
+          class="w-full md:w-auto px-8 py-4 rounded-lg font-semibold text-lg transition-all bg-black text-white hover:bg-black/80 border-2 border-transparent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+          aria-label="Accéder au formulaire de contact"
+          @click="handleOpenModal"
+        >
           {{ $t('hero1.ctaPrimary') }}
-        </NuxtLink>
-        <NuxtLink to="#approach" class="w-full md:w-auto px-8 py-4 rounded-lg font-semibold text-lg transition-all bg-transparent border-2 border-white text-white hover:bg-white hover:text-black" aria-label="Découvrir ma méthode de travail">
+        </button>
+        <NuxtLink to="#approach" class="w-full md:w-auto px-8 py-4 rounded-lg font-semibold text-lg transition-all bg-transparent border-2 border-white text-white hover:bg-white hover:text-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" aria-label="Découvrir ma méthode de travail">
           {{ $t('hero1.ctaSecondary') }}
         </NuxtLink>
       </div>
@@ -47,6 +52,15 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import { useContactModal } from '~/composables/useContactModal'
 
 const { t } = useI18n()
+const { openModal: openContactModal } = useContactModal()
+
+/**
+ * Handle primary CTA click
+ */
+const handleOpenModal = () => {
+  openContactModal()
+}
 </script>
