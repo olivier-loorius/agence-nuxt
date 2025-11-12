@@ -34,7 +34,7 @@ const { showNav } = useScrollNav()
   <nav
     role="navigation"
     aria-label="Navigation principale"
-    class="hidden lg:flex fixed left-8 z-50 h-12 backdrop-blur-xl items-center gap-12 transition-all duration-500"
+    class="hidden lg:flex fixed left-8 z-50 h-14 bg-white/95 items-center gap-12 transition-all duration-500"
     :style="{
       top: '32px',
       padding: '0 32px',
@@ -44,14 +44,14 @@ const { showNav } = useScrollNav()
       pointerEvents: showNav ? 'auto' : 'none'
     }"
   >
-    <h1 v-if="activeSection === 'home'" class="font-sora text-primary font-bold text-xl focus:outline-2 focus:outline-primary focus:outline-offset-2 rounded inline-block">
+    <div v-if="activeSection === 'home'" class="font-space-grotesk text-primary font-bold text-xl focus:outline-2 focus:outline-primary focus:outline-offset-2 rounded inline-block">
       O
-    </h1>
+    </div>
     <NuxtLink
       v-else
       to="/#home"
       :aria-label="t('nav.logoAria')"
-      class="font-sora text-primary font-bold text-xl hover:text-primary/80 transition-transform duration-300 hover:rotate-6 focus:outline-2 focus:outline-primary focus:outline-offset-2 rounded inline-block"
+      class="font-space-grotesk text-primary font-bold text-xl hover:text-primary/80 transition-transform duration-300 hover:rotate-6 focus:outline-2 focus:outline-primary focus:outline-offset-2 rounded inline-block"
       data-section="home"
     >
       O
@@ -63,25 +63,25 @@ const { showNav } = useScrollNav()
         :key="link.label"
         :to="`/#${link.href.slice(1)}`"
         :aria-label="`Aller à la section ${link.label}`"
-        :class="['relative font-manrope text-sm font-semibold text-gray-700 hover:text-primary transition-all duration-300 group focus:outline-2 focus:outline-primary focus:outline-offset-2 rounded px-2 flex items-center gap-2 hover:scale-105', link.href.slice(1) === activeSection ? 'border-b-2 border-primary text-primary' : '']"
+        :class="['relative font-inter text-sm font-semibold text-black hover:text-black/60 transition-all duration-300 group focus:outline-2 focus:outline-primary focus:outline-offset-2 rounded px-2 flex items-center gap-2 hover:scale-105', link.href.slice(1) === activeSection ? 'border-b-4 border-primary text-black' : '']"
         :data-section="link.href.slice(1)"
       >
         <component :is="link.icon" class="w-4 h-4 transition-transform duration-300 group-hover:scale-110" />
         {{ link.label }}
-        <span v-if="link.href.slice(1) !== activeSection" class="absolute left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full" style="bottom: -8px;"></span>
+        <span v-if="link.href.slice(1) !== activeSection" class="absolute left-0 w-0 h-1 bg-primary transition-all duration-300 group-hover:w-full" style="bottom: -6px;"></span>
       </NuxtLink>
     </div>
   </nav>
 
   <!-- Mobile Logo (always visible) -->
-  <h1 v-if="activeSection === 'home'" class="lg:hidden fixed top-8 left-8 z-50 font-sora text-primary font-bold text-xl focus:outline-2 focus:outline-primary focus:outline-offset-2 rounded inline-block">
+  <div v-if="activeSection === 'home'" class="lg:hidden fixed top-8 left-8 z-50 font-space-grotesk text-primary font-bold text-xl focus:outline-2 focus:outline-primary focus:outline-offset-2 rounded inline-block">
     O
-  </h1>
+  </div>
   <NuxtLink
     v-else
     to="/#home"
     :aria-label="t('nav.logoAria')"
-    class="lg:hidden fixed top-8 left-8 z-50 font-sora text-primary font-bold text-xl hover:text-primary/80 transition-transform duration-300 hover:rotate-6 focus:outline-2 focus:outline-primary focus:outline-offset-2 rounded inline-block"
+    class="lg:hidden fixed top-8 left-8 z-50 font-space-grotesk text-primary font-bold text-xl hover:text-primary/80 transition-transform duration-300 hover:rotate-6 focus:outline-2 focus:outline-primary focus:outline-offset-2 rounded inline-block"
     data-section="home"
   >
     O
@@ -97,19 +97,19 @@ const { showNav } = useScrollNav()
   >
     <!-- Hamburger lines animated -->
     <span
-      class="w-6 h-0.5 bg-gray-900 origin-center transition-all duration-300"
+      class="w-6 h-0.5 bg-primary origin-center transition-all duration-300"
       :style="{
         transform: isMobileMenuOpen ? 'rotate(45deg) translateY(10px)' : 'rotate(0)',
       }"
     ></span>
     <span
-      class="w-6 h-0.5 bg-gray-900 transition-all duration-300"
+      class="w-6 h-0.5 bg-primary transition-all duration-300"
       :style="{
         opacity: isMobileMenuOpen ? 0 : 1,
       }"
     ></span>
     <span
-      class="w-6 h-0.5 bg-gray-900 origin-center transition-all duration-300"
+      class="w-6 h-0.5 bg-primary origin-center transition-all duration-300"
       :style="{
         transform: isMobileMenuOpen ? 'rotate(-45deg) translateY(-10px)' : 'rotate(0)',
       }"
@@ -117,11 +117,11 @@ const { showNav } = useScrollNav()
   </button>
 
   <!-- Mobile Menu Modal (Compact) -->
-  <!-- Backdrop -->
+  <!-- Backdrop with blur -->
   <Transition name="fade-modal">
     <div
       v-if="isMobileMenuOpen"
-      class="lg:hidden fixed inset-0 z-40 bg-black/20"
+      class="lg:hidden fixed inset-0 z-40 bg-black/60 backdrop-blur-md"
       @click="isMobileMenuOpen = false"
     />
   </Transition>
@@ -165,7 +165,7 @@ const { showNav } = useScrollNav()
       <!-- CTA Button -->
       <button
         :title="t('nav.cta')"
-        class="mx-auto w-auto bg-accent text-white font-manrope font-semibold text-base px-8 py-4 hover:bg-accent/90 transition-all duration-300 shadow-lg focus:outline-2 focus:outline-primary focus:outline-offset-2 rounded flex items-center gap-2 hover:scale-105 hover:shadow-2xl"
+        class="mx-auto w-auto bg-primary text-black font-inter font-semibold text-base px-8 py-4 hover:bg-primary/90 transition-all duration-300 shadow-lg focus:outline-2 focus:outline-primary focus:outline-offset-2 rounded-lg flex items-center gap-2 hover:scale-105 hover:shadow-2xl"
         :style="{ borderRadius: '8px' }"
         @click="isMobileMenuOpen = false"
       >
@@ -177,10 +177,10 @@ const { showNav } = useScrollNav()
 </template>
 
 <style scoped>
-/* Backdrop fade animation */
+/* Backdrop fade animation with smooth opacity transition */
 .fade-modal-enter-active,
 .fade-modal-leave-active {
-  transition: opacity 0.3s ease;
+  transition: opacity 0.4s ease-out;
 }
 
 .fade-modal-enter-from,
@@ -191,7 +191,7 @@ const { showNav } = useScrollNav()
 /* Modal scale animation */
 .scale-modal-enter-active,
 .scale-modal-leave-active {
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .scale-modal-enter-from,

@@ -1,6 +1,6 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Home, User, Lightbulb, Briefcase } from 'lucide-vue-next'
+import { Home, User, Lightbulb, Mail } from 'lucide-vue-next'
 import type { NavLink } from '~/types/navigation'
 
 /**
@@ -20,7 +20,7 @@ export const useNavigation = () => {
     { label: t('nav.home'), href: '#home', icon: Home },
     { label: t('nav.about'), href: '#about', icon: User },
     { label: t('nav.approach'), href: '#approach', icon: Lightbulb },
-    { label: t('nav.projects'), href: '#projects', icon: Briefcase },
+    { label: t('nav.contact'), href: '#contact', icon: Mail },
   ])
 
   return {

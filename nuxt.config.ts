@@ -38,6 +38,10 @@ export default defineNuxtConfig({
           content: 'AgenceO est une agence web spécialisée dans la création de sites modernes pour artisans. Présence en ligne, design personnalisé et stratégie digitale.',
         },
         {
+          name: 'keywords',
+          content: 'développeur web indépendant, site vitrine artisan, site sur-mesure TPE, création site web accessible',
+        },
+        {
           name: 'viewport',
           content: 'width=device-width, initial-scale=1',
         },
@@ -53,8 +57,13 @@ export default defineNuxtConfig({
           crossorigin: '',
         },
         {
+          rel: 'preload',
+          href: 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap',
+          as: 'style',
+        },
+        {
           rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap',
+          href: 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap',
         },
       ],
     },

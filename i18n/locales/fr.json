@@ -3,9 +3,15 @@
     "home": "Accueil",
     "about": "Mon parcours",
     "approach": "Ma démarche",
-    "projects": "Projets",
+    "contact": "Contact",
     "cta": "Travaillons ensemble",
     "logoAria": "Retour à l'accueil",
     "menuAria": "Ouvrir le menu"
+  },
+  "hero1": {
+    "title": "Votre site web, pensé pour vous",
+    "subtitle": "Pas de formules toutes faites. Chaque site est conçu sur-mesure, pour correspondre vraiment à votre activité et vos besoins.",
+    "ctaPrimary": "Parlons de votre projet",
+    "ctaSecondary": "Découvrir ma démarche"
   }
 }
