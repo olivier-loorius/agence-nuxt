@@ -11,10 +11,11 @@ const { t } = useI18n()
 <template>
   <button
     :title="t('nav.cta')"
-    class="hidden lg:flex fixed right-12 z-50 h-12 bg-accent text-white font-manrope font-medium text-sm hover:bg-accent/90 transition-all duration-300 shadow-lg items-center gap-2 hover:scale-105 focus:ring-2 focus:ring-primary/50 focus:ring-offset-0"
+    :aria-label="t('nav.cta')"
+    class="hidden lg:flex fixed right-12 z-50 h-14 bg-primary text-black font-inter font-semibold text-sm hover:bg-primary/90 transition-all duration-300 shadow-lg items-center gap-2 hover:scale-105 focus:ring-2 focus:ring-primary/50 focus:ring-offset-0 rounded-lg"
     :style="{
       top: '32px',
-      padding: '12px 24px',
+      padding: '8px 24px',
       borderRadius: '8px'
     }"
   >
