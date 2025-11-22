@@ -8,6 +8,10 @@
       <section id="skills" class="snap-start h-screen min-h-screen"><Hero2 /></section>
       <section id="work" class="snap-start h-screen min-h-screen"><Hero3 /></section>
       <section id="contact" class="snap-start h-screen min-h-screen"><Hero4 /></section>
+      <!-- Footer as 5th snap section -->
+      <section id="footer" class="snap-start h-auto">
+        <Footer />
+      </section>
     </main>
   </div>
 </template>
@@ -17,6 +21,7 @@ import Hero1 from "~/components/sections/Hero1.vue";
 import Hero2 from "~/components/sections/Hero2.vue";
 import Hero3 from "~/components/sections/Hero3.vue";
 import Hero4 from "~/components/sections/Hero4.vue";
+import Footer from "~/components/footer/Footer.vue";
 </script>
 
 <style scoped>
