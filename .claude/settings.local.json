@@ -12,7 +12,19 @@
       "Bash(npm install:*)",
       "Bash(timeout 30 npm run dev:*)",
       "Bash(git mv:*)",
-      "Bash(npm run test:run:*)"
+      "Bash(npm run test:run:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(tasklist:*)",
+      "Bash(npm ls:*)",
+      "Bash(taskkill:*)",
+      "Bash(timeout 3 netstat:*)",
+      "Bash(timeout 2 netstat:*)",
+      "Bash(kill:*)",
+      "Bash(npm run postinstall:*)",
+      "Bash(dir:*)",
+      "Bash(curl:*)",
+      "Bash(cwebp:*)"
     ],
     "deny": [],
     "ask": []

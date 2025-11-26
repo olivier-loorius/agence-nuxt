@@ -16,8 +16,32 @@
     "ctaSecondary": "Découvrir ma démarche"
   },
   "hero4": {
-    "title": "Parlons de votre projet",
-    "subtitle": "Remplissez ce formulaire et nous vous recontacterons rapidement pour discuter de vos besoins et trouver la meilleure solution pour votre projet."
+    "bgAlt": "Fond abstrait représentant un environnement de travail",
+    "title": "Vous avez une idée, même floue ? On peut en parler avant de se lancer.",
+    "subtitle": "Parlez-moi de vos idées, même floues. Dites-moi où vous en êtes : je vous aide à avancer et je vous propose des solutions adaptées.",
+    "benefit1": {
+      "title": "Un site qui vous ressemble",
+      "description": "Je crée un site adapté à votre activité, vos idées et votre identité. Rien de standard, rien de copié : c’est votre site."
+    },
+    "benefit2": {
+      "title": "On vous explique simplement",
+      "description": "Pas de termes compliqués. Si vous ne comprenez pas, je reformule jusqu'à ce que ce soit clair."
+    },
+    "benefit3": {
+      "title": "Être trouvé par vos clients",
+      "description": "Un bon site, c'est un site qui vous fait gagner des clients. C'est ça qui compte."
+    },
+    "form": {
+      "title": "Dites-m'en plus",
+      "prenom": "Prénom",
+      "email": "Email",
+      "message": "Votre projet en quelques mots",
+      "rgpd": "J'accepte la politique de confidentialité",
+      "submit": "Envoyer",
+      "cta": "Contactez-moi",
+      "modalQuestion": "Vous avez une idée précise ?",
+      "modalCta": "Cliquez ici"
+    }
   },
   "contact": {
     "modal": {
@@ -39,7 +63,7 @@
       },
       "email": {
         "label": "Email",
-        "placeholder": "john{'@'}example.com",
+        "placeholder": "Email",
         "error": "Veuillez entrer une adresse email valide"
       },
       "telephone": {
