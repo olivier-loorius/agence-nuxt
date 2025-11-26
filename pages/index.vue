@@ -7,7 +7,9 @@
       <section id="about" class="snap-start h-screen"><Hero1 /></section>
       <section id="skills" class="snap-start h-screen min-h-screen"><Hero2 /></section>
       <section id="work" class="snap-start h-screen min-h-screen"><Hero3 /></section>
-      <section id="contact" class="snap-start h-screen min-h-screen"><Hero4 /></section>
+      <section id="contact" class="snap-start h-screen min-h-screen">
+        <Hero4 @open-contact-modal="handleOpenModal" />
+      </section>
       <!-- Footer as 5th snap section -->
       <section id="footer" class="snap-start h-auto">
         <Footer />
@@ -17,11 +19,24 @@
 </template>
 
 <script setup lang="ts">
-import Hero1 from "~/components/sections/Hero1.vue";
-import Hero2 from "~/components/sections/Hero2.vue";
-import Hero3 from "~/components/sections/Hero3.vue";
-import Hero4 from "~/components/sections/Hero4.vue";
+import Hero1 from "~/components/homepage/hero1/Hero1.vue";
+import Hero2 from "~/components/homepage/hero2/Hero2.vue";
+import Hero3 from "~/components/homepage/hero3/Hero3.vue";
+import Hero4 from "~/components/homepage/hero4/Hero4.vue";
 import Footer from "~/components/footer/Footer.vue";
+import { useContactModal } from "~/composables/useContactModal";
+
+/**
+ * Contact modal composable
+ */
+const { openModal } = useContactModal()
+
+/**
+ * Handle opening the contact modal
+ */
+const handleOpenModal = () => {
+  openModal()
+}
 </script>
 
 <style scoped>

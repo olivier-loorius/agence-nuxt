@@ -17,40 +17,20 @@ const isMobileMenuOpen = ref(false)
  * @type {Ref<string>}
  */
 const activeSection = ref('home')
-
-/**
- * i18n composable for translations
- */
 const { t } = useI18n()
-
-/**
- * Navigation data and scroll visibility
- */
 const { navLinks } = useNavigation()
 const { showNav } = useScrollNav()
-
-/**
- * Contact modal composable
- */
 const { openModal } = useContactModal()
 
-/**
- * Smooth scroll to section
- * Fallback method if NuxtLink hash navigation has issues
- */
 const scrollToSection = (href: string) => {
-  const sectionId = href.slice(1) // Remove '#' prefix
+  const sectionId = href.slice(1) 
   const element = document.getElementById(sectionId)
   if (element) {
     element.scrollIntoView({ behavior: 'smooth' })
-    // Close mobile menu if open
     isMobileMenuOpen.value = false
   }
 }
 
-/**
- * Handle CTA click: open modal and close menu
- */
 const handleCtaClick = () => {
   openModal()
   isMobileMenuOpen.value = false
@@ -58,7 +38,6 @@ const handleCtaClick = () => {
 </script>
 
 <template>
-  <!-- Left Navigation Block -->
   <nav
     role="navigation"
     aria-label="Navigation principale"
@@ -102,7 +81,6 @@ const handleCtaClick = () => {
     </div>
   </nav>
 
-  <!-- Mobile Logo (always visible) -->
   <div v-if="activeSection === 'home'" class="lg:hidden fixed top-8 left-8 z-50 font-space-grotesk text-primary font-bold text-xl focus:outline-2 focus:outline-primary focus:outline-offset-2 rounded inline-block">
     O
   </div>
@@ -115,8 +93,7 @@ const handleCtaClick = () => {
   >
     O
   </NuxtLink>
-
-  <!-- Mobile Hamburger Button -->
+  
   <button
     :aria-expanded="isMobileMenuOpen"
     :aria-label="t('nav.menuAria')"
@@ -124,7 +101,6 @@ const handleCtaClick = () => {
     class="lg:hidden fixed top-8 right-8 z-50 p-2 flex flex-col gap-1.5 group focus:outline-2 focus:outline-primary focus:outline-offset-2 rounded transition-transform duration-300 hover:scale-110"
     @click="isMobileMenuOpen = !isMobileMenuOpen"
   >
-    <!-- Hamburger lines animated -->
     <span
       class="w-6 h-0.5 bg-primary origin-center transition-all duration-300"
       :style="{
@@ -144,9 +120,6 @@ const handleCtaClick = () => {
       }"
     ></span>
   </button>
-
-  <!-- Mobile Menu Modal (Compact) -->
-  <!-- Backdrop with blur -->
   <Transition name="fade-modal">
     <div
       v-if="isMobileMenuOpen"
@@ -155,7 +128,6 @@ const handleCtaClick = () => {
     />
   </Transition>
 
-  <!-- Modal -->
   <Transition name="scale-modal">
     <div
       v-if="isMobileMenuOpen"
@@ -166,7 +138,6 @@ const handleCtaClick = () => {
       class="lg:hidden fixed top-20 left-4 right-4 z-50 mx-auto bg-white/90 backdrop-blur-xl rounded-xl shadow-2xl p-6 max-w-sm"
       @click.stop
     >
-      <!-- Navigation Links with stagger animation -->
       <nav class="flex flex-col gap-3 mb-6" aria-label="Navigation du menu">
         <NuxtLink
           v-for="(link, i) in navLinks"
@@ -188,10 +159,7 @@ const handleCtaClick = () => {
         </NuxtLink>
       </nav>
 
-      <!-- Divider -->
       <div class="h-px bg-gray-200 my-4" role="separator" />
-
-      <!-- CTA Button -->
       <button
         :title="t('nav.cta')"
         class="mx-auto w-auto bg-primary text-black font-inter font-semibold text-base px-8 py-4 hover:bg-primary/90 transition-all duration-300 shadow-lg focus:outline-2 focus:outline-primary focus:outline-offset-2 rounded-lg flex items-center gap-2 hover:scale-105 hover:shadow-2xl"
@@ -206,7 +174,6 @@ const handleCtaClick = () => {
 </template>
 
 <style scoped>
-/* Backdrop fade animation with smooth opacity transition */
 .fade-modal-enter-active,
 .fade-modal-leave-active {
   transition: opacity 0.4s ease-out;
@@ -217,7 +184,6 @@ const handleCtaClick = () => {
   opacity: 0;
 }
 
-/* Modal scale animation */
 .scale-modal-enter-active,
 .scale-modal-leave-active {
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
