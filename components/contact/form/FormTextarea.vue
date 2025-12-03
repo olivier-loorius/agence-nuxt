@@ -98,7 +98,7 @@ const handleBlur = () => {
     <div v-if="!hideLabel" class="flex items-center gap-2">
       <label
         :for="textareaId"
-        class="flex items-center gap-2 text-sm font-semibold text-gray-900"
+        class="flex items-center gap-2 text-sm font-semibold text-gray-900 lg:hidden"
       >
         <component :is="iconComponent" class="w-4 h-4 text-gray-600 flex-shrink-0" />
         {{ label }}
@@ -119,12 +119,12 @@ const handleBlur = () => {
         :id="textareaId"
         :value="modelValue"
         :placeholder="placeholder"
-        :rows="rows"
+        :style="{ height: 'calc(2 * 48px + 16px)' }"
         :aria-label="ariaLabel"
         :aria-required="required"
         :aria-invalid="!!error"
         :aria-describedby="error ? `${textareaId}-error` : undefined"
-        :class="['w-full px-4 rounded-lg border-2 border-gray-300 bg-white text-gray-900 placeholder-gray-400 transition-all duration-200 focus:outline-none focus:border-primary/50 focus:ring-[0.5px] focus:ring-primary/20 resize-none font-inter', props.compact ? 'py-2 text-sm' : 'py-3 text-base', { 'pl-10': iconComponent && showIcon }]"
+        :class="['w-full px-4 rounded-lg border-2 border-gray-300 bg-white text-gray-900 placeholder-gray-400 transition-all duration-200 focus:outline-none focus:border-primary/50 focus:ring-[0.5px] focus:ring-primary/20 resize-none font-inter', props.compact ? 'py-2 text-sm' : 'py-2.5 text-base', { 'pl-10': iconComponent && showIcon }]"
         @input="handleInput"
         @focus="handleFocus"
         @blur="handleBlur"

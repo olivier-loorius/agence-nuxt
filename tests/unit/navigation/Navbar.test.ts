@@ -3,8 +3,8 @@ import { mount } from '@vue/test-utils'
 import Navbar from '../../../components/navigation/Navbar.vue'
 
 /**
- * Tests comportementaux essentiels pour Navbar
- * Focus sur : scroll behavior, mobile menu, accessibilité
+ * Tests comportementaux Navbar
+ * Focus : scroll behavior, mobile menu, accessibilité
  */
 describe('Navbar - Comportemental', () => {
   let wrapper: any
@@ -12,7 +12,7 @@ describe('Navbar - Comportemental', () => {
   const scrollIntoViewSpy = vi.fn()
 
   beforeEach(() => {
-    // Réinitialiser les mocks
+    // Réinitialise mocks
     scrollToSpy.mockClear()
     scrollIntoViewSpy.mockClear()
 

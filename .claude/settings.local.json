@@ -24,7 +24,12 @@
       "Bash(npm run postinstall:*)",
       "Bash(dir:*)",
       "Bash(curl:*)",
-      "Bash(cwebp:*)"
+      "Bash(cwebp:*)",
+      "Bash(node:*)",
+      "Bash(powershell:*)",
+      "Bash(npm run test:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []

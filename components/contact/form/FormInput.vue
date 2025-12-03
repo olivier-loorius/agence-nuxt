@@ -57,12 +57,14 @@ const iconComponent = computed(() => {
     return props.icon
   }
   switch (props.type) {
+    case 'text':
+      return User
     case 'email':
       return Mail
     case 'tel':
       return Phone
     default:
-      return User
+      return Mail
   }
 })
 
@@ -107,7 +109,7 @@ const handleBlur = () => {
     <div v-if="!hideLabel" class="flex items-center gap-2">
       <label
         :for="inputId"
-        :class="['flex items-center gap-2 font-semibold text-gray-900', props.compact ? 'text-xs' : 'text-sm']"
+        :class="['flex items-center gap-2 font-semibold text-gray-900 lg:hidden', props.compact ? 'text-xs' : 'text-sm']"
       >
         <component :is="iconComponent" class="w-4 h-4 text-gray-600 flex-shrink-0" />
         {{ label }}
@@ -115,13 +117,12 @@ const handleBlur = () => {
       </label>
     </div>
 
-    <div class="relative">
+    <div class="relative group">
       <!-- Icon element inside input -->
       <component
         v-if="iconComponent && showIcon"
         :is="iconComponent"
-        class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-accent/60 transition-colors duration-200 pointer-events-none"
-        :class="{ 'text-accent': isFocused }"
+        class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 transition-colors duration-200 pointer-events-none group-focus-within:text-black"
       />
 
       <input

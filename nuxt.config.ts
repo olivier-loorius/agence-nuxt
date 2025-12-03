@@ -6,6 +6,7 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@nuxt/image',
     '@nuxtjs/i18n',
+    '@nuxtjs/google-fonts',
     // '@nuxt/content',
     // 'nuxt-seo'
   ],
@@ -20,6 +21,14 @@ export default defineNuxtConfig({
     ],
     langDir: 'locales',
     strategy: 'no_prefix',
+  },
+
+  googleFonts: {
+    display: 'swap',
+    families: {
+      Manrope: [400, 500, 600, 700, 800],
+      Inter: [300, 400, 500, 600],
+    },
   },
 
   postcss: {
@@ -46,26 +55,7 @@ export default defineNuxtConfig({
           content: 'width=device-width, initial-scale=1',
         },
       ],
-      link: [
-        {
-          rel: 'preconnect',
-          href: 'https://fonts.googleapis.com',
-        },
-        {
-          rel: 'preconnect',
-          href: 'https://fonts.gstatic.com',
-          crossorigin: '',
-        },
-        {
-          rel: 'preload',
-          href: 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap',
-          as: 'style',
-        },
-        {
-          rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap',
-        },
-      ],
+      link: [],
     },
   },
 

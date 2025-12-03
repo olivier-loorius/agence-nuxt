@@ -17,22 +17,27 @@
   },
   "hero4": {
     "bgAlt": "Fond abstrait représentant un environnement de travail",
+    "header": {
+      "title": "Une idée, même floue ? Parlons-en.",
+      "subtitle": "Parlez-moi de vos idées, même floues. Dites-moi où vous en êtes : je vous aide à avancer et je vous propose des solutions adaptées."
+    },
     "title": "Vous avez une idée, même floue ? On peut en parler avant de se lancer.",
     "subtitle": "Parlez-moi de vos idées, même floues. Dites-moi où vous en êtes : je vous aide à avancer et je vous propose des solutions adaptées.",
     "benefit1": {
-      "title": "Un site qui vous ressemble",
-      "description": "Je crée un site adapté à votre activité, vos idées et votre identité. Rien de standard, rien de copié : c’est votre site."
+      "title": "Donnez forme à votre idée",
+      "description": "On structure votre vision pour la rendre lisible et compréhensible immédiatement."
     },
     "benefit2": {
-      "title": "On vous explique simplement",
-      "description": "Pas de termes compliqués. Si vous ne comprenez pas, je reformule jusqu'à ce que ce soit clair."
+      "title": "Avancez avec plus de clarté",
+      "description": "Je vous accompagne pour définir ce qui compte vraiment dans votre projet."
     },
     "benefit3": {
-      "title": "Être trouvé par vos clients",
-      "description": "Un bon site, c'est un site qui vous fait gagner des clients. C'est ça qui compte."
+      "title": "Une présence unique",
+      "description": "Votre image, vos valeurs et vos objectifs trouvent leurs place."
     },
     "form": {
       "title": "Dites-m'en plus",
+      "intro": "Laissez-moi un message. Vous avez une idée précise ? Cliquez ici.",
       "prenom": "Prénom",
       "email": "Email",
       "message": "Votre projet en quelques mots",

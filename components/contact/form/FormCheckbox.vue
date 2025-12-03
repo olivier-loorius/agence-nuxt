@@ -61,13 +61,14 @@ const handleChange = (event: Event) => {
         :aria-required="required"
         :aria-invalid="!!error"
         :aria-describedby="error ? `${checkboxId}-error` : hint ? `${checkboxId}-hint` : undefined"
-        :class="['rounded border-2 border-gray-300 bg-white text-primary cursor-pointer transition-all duration-200 focus:outline-none focus:border-primary/50 focus:ring-[0.5px] focus:ring-primary/20 w-4 h-4', props.compact ? 'mt-0.5' : 'mt-1']"
+        :class="['rounded border-2 border-gray-300 bg-white text-primary checked:bg-primary checked:border-primary cursor-pointer transition-all duration-200 focus:outline-none focus:border-primary/50 focus:ring-[0.5px] focus:ring-primary/20 w-4 h-4', props.compact ? 'mt-0.5' : 'mt-1']"
+        style="accent-color: #EAB308"
         @change="handleChange"
       />
       <div class="flex flex-col gap-1 flex-1">
         <label
           :for="checkboxId"
-          :class="['font-medium text-gray-900 cursor-pointer', props.compact ? 'text-xs leading-snug' : 'text-sm']"
+          :class="['font-medium text-gray-900 cursor-pointer lg:sr-only', props.compact ? 'text-xs leading-snug' : 'text-sm']"
         >
           {{ label }}
           <span v-if="required" class="text-red-500 ml-1" :aria-label="t('contact.form.requiredIndicator')">*</span>
