@@ -58,7 +58,7 @@
     "form": {
       "prenom": {
         "label": "Prénom",
-        "placeholder": "John",
+        "placeholder": "Prénom *",
         "error": "Le prénom doit contenir au moins 2 caractères"
       },
       "nom": {
@@ -68,7 +68,7 @@
       },
       "email": {
         "label": "Email",
-        "placeholder": "Email",
+        "placeholder": "Email *",
         "error": "Veuillez entrer une adresse email valide"
       },
       "telephone": {
@@ -98,8 +98,8 @@
         "error": "Veuillez décrire votre activité (au moins 10 caractères)"
       },
       "message": {
-        "label": "Détails de votre projet",
-        "placeholder": "Parlez-nous de votre projet, vos objectifs, vos attentes...",
+        "label": "Message",
+        "placeholder": "Message *",
         "error": "Le message doit contenir au moins 20 caractères"
       },
       "autorisationRappel": {

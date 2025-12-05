@@ -122,7 +122,7 @@ const handleBlur = () => {
       <component
         v-if="iconComponent && showIcon"
         :is="iconComponent"
-        class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 transition-colors duration-200 pointer-events-none group-focus-within:text-black"
+        class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 transition-colors duration-200 pointer-events-none group-focus-within:text-black stroke-current stroke-[1.5]"
       />
 
       <input
@@ -135,7 +135,7 @@ const handleBlur = () => {
         :aria-required="required"
         :aria-invalid="!!error"
         :aria-describedby="error ? `${inputId}-error` : undefined"
-        :class="['w-full px-4 rounded-lg border-2 border-gray-300 bg-white text-gray-900 placeholder-gray-400 transition-all duration-200 focus:outline-none focus:border-primary/50 focus:ring-[0.5px] focus:ring-primary/20', props.compact ? 'py-2 text-sm' : 'py-3 text-base', { 'pl-10': iconComponent && showIcon }]"
+        :class="['w-full px-4 rounded-lg border-2 bg-white text-gray-900 placeholder-gray-400 transition-all duration-200 focus:outline-none focus:border-primary/50 focus:ring-[0.5px] focus:ring-primary/20', props.compact ? 'py-2 text-sm' : 'py-3 text-base', { 'pl-10': iconComponent && showIcon }, error ? 'border-red-500 animate-shake' : 'border-gray-300']"
         @input="handleInput"
         @focus="handleFocus"
         @blur="handleBlur"
@@ -143,11 +143,10 @@ const handleBlur = () => {
     </div>
 
     <p
-      v-if="error"
       :id="`${inputId}-error`"
-      class="text-sm text-red-500 font-medium"
-      role="alert"
-      aria-live="polite"
+      class="text-xs text-red-600 font-semibold min-h-[20px]"
+      :role="error ? 'alert' : undefined"
+      :aria-live="error ? 'polite' : undefined"
     >
       {{ error }}
     </p>
@@ -155,6 +154,16 @@ const handleBlur = () => {
 </template>
 
 <style scoped>
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25%, 75% { transform: translateX(-4px); }
+  50% { transform: translateX(4px); }
+}
+
+.animate-shake {
+  animation: shake 0.3s ease;
+}
+
 input:focus-visible {
   outline: 2px solid transparent;
   outline-offset: 2px;

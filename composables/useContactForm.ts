@@ -46,6 +46,7 @@ export const useContactForm = () => {
     prenom: undefined,
     email: undefined,
     message: undefined,
+    rgpdConsent: undefined,
   })
 
   /**
@@ -73,6 +74,7 @@ export const useContactForm = () => {
     errors.prenom = undefined
     errors.email = undefined
     errors.message = undefined
+    errors.rgpdConsent = undefined
   }
 
   /**
@@ -89,8 +91,10 @@ export const useContactForm = () => {
    * @returns Object with validation result
    */
   const validate = async () => {
-    clearErrors()
-    const isValid = true
+    // Réinitialiser errors
+    for (const key in errors) {
+      delete errors[key as keyof ContactFormData]
+    }
 
     // Validate required fields
     if (!formData.prenom || formData.prenom.trim() === '') {
@@ -105,6 +109,10 @@ export const useContactForm = () => {
 
     if (!formData.message || formData.message.trim() === '') {
       errors.message = 'Le message est obligatoire'
+    }
+
+    if (!formData.rgpdConsent) {
+      errors.rgpdConsent = 'Vous devez accepter'
     }
 
     submitted.value = true

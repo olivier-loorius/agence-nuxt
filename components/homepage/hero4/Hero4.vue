@@ -5,7 +5,6 @@ import { useScroll, useResizeObserver, watchThrottled } from "@vueuse/core";
 import { useRouter } from "vue-router";
 import { useHead } from "#app";
 import {
-  ChevronRight,
   PencilLine,
   LaptopMinimalCheck,
   MessageSquare,
@@ -13,9 +12,7 @@ import {
   ClipboardPen,
 } from "lucide-vue-next";
 import Hero4ContactForm from "~/components/homepage/hero4/Hero4ContactForm.vue";
-import BenefitItem from "~/components/homepage/hero4/BenefitItem.vue";
 import FormInput from "~/components/contact/form/FormInput.vue";
-import FormTextarea from "~/components/contact/form/FormTextarea.vue";
 import FormCheckbox from "~/components/contact/form/FormCheckbox.vue";
 import { useContactForm } from "~/composables/useContactForm";
 
@@ -23,8 +20,6 @@ const emit = defineEmits<{ "open-contact-modal": [] }>();
 
 const { t } = useI18n();
 const { validate, errors, formData } = useContactForm();
-const CARD_HEIGHT = 450;
-const CAROUSEL_SLIDE_MIN_HEIGHT = "82vh";
 const INTERSECTION_THRESHOLD = 0.35;
 const RESET_DELAY_MS = 60;
 const SCROLL_THROTTLE_MS = 100;
@@ -47,6 +42,7 @@ useHead({
 const sectionRef = ref<HTMLElement | null>(null);
 const carouselRef = ref<HTMLElement | null>(null);
 const benefitsRef = ref<HTMLElement | null>(null);
+const benefitsMobileRef = ref<HTMLElement | null>(null);
 const currentSlide = ref(0);
 const isCarouselVisible = ref(true);
 const isResetting = ref(false);
@@ -95,11 +91,7 @@ const setupIntersectionObserver = () => {
 };
 
 const setupBenefitsObserver = () => {
-  if (!benefitsRef.value) {
-    console.log("benefitsRef.value is null");
-    return;
-  }
-  console.log("benefitsRef attached:", benefitsRef.value);
+  if (!benefitsRef.value && !benefitsMobileRef.value) return;
 
   benefitsObserver = new IntersectionObserver(
     (entries) => {
@@ -109,12 +101,13 @@ const setupBenefitsObserver = () => {
         lastScrollY.value = currentScrollY;
 
         if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
-          console.log("Benefits visible, showBenefits set to true");
           setTimeout(() => {
             showBenefits.value = true;
           }, 500);
         } else if (!scrollingDown) {
-          const footerVisible = document.querySelector('footer')?.getBoundingClientRect().top < window.innerHeight
+          const footerVisible =
+            document.querySelector("footer")?.getBoundingClientRect().top <
+            window.innerHeight;
           if (!footerVisible) {
             showBenefits.value = false;
           }
@@ -124,7 +117,12 @@ const setupBenefitsObserver = () => {
     { threshold: [0.5] }
   );
 
-  benefitsObserver.observe(benefitsRef.value);
+  if (benefitsRef.value) {
+    benefitsObserver.observe(benefitsRef.value);
+  }
+  if (benefitsMobileRef.value) {
+    benefitsObserver.observe(benefitsMobileRef.value);
+  }
 };
 
 const router = useRouter();
@@ -145,6 +143,9 @@ onBeforeUnmount(() => {
   }
   if (benefitsObserver && benefitsRef.value) {
     benefitsObserver.unobserve(benefitsRef.value);
+  }
+  if (benefitsObserver && benefitsMobileRef.value) {
+    benefitsObserver.unobserve(benefitsMobileRef.value);
   }
   if (removeAfterEach) {
     removeAfterEach();
@@ -172,11 +173,8 @@ watchThrottled(
 
 const goToSlide = (index: number) => {
   if (!carouselRef.value) return;
-  const left = Math.max(
-    0,
-    Math.round(index * (slideWidth.value || carouselRef.value.clientWidth))
-  );
-  carouselRef.value.scrollTo({ left, behavior: "smooth" });
+  const width = carouselRef.value.clientWidth;
+  carouselRef.value.scrollTo({ left: index * width, behavior: "smooth" });
   currentSlide.value = index;
 };
 
@@ -217,7 +215,6 @@ const openModal = () => {
     ref="sectionRef"
     id="contact"
     class="h-screen snap-start flex flex-col items-center justify-start relative overflow-hidden pt-16 lg:pt-24"
-    aria-labelledby="contact-title"
   >
     <NuxtImg
       src="/BGHero4.webp"
@@ -239,74 +236,141 @@ const openModal = () => {
 
     <!-- MOBILE (unchanged) -->
     <div
-      class="relative z-10 w-full h-full flex flex-col lg:hidden items-center justify-center gap-section px-6"
+      class="relative z-10 w-full h-full flex flex-col lg:hidden items-center justify-start px-6 pt-6 pb-4"
     >
       <div
         ref="carouselRef"
         role="region"
-        aria-label="Carousel de présentation - Sélectionnez une option"
+        aria-label="Navigation entre formulaires"
         tabindex="0"
-        class="carousel-container pt-4 w-full h-[calc(100%+2rem)] overflow-x-auto snap-x snap-mandatory scroll-smooth scrollbar-hide"
+        class="carousel-container w-full h-[calc(100vh-12rem)] overflow-x-auto snap-x snap-proximity scroll-smooth scrollbar-hide"
       >
-        <div class="flex h-full gap-2">
+        <div class="flex flex-nowrap h-full gap-2">
           <div
-            class="-mt-4 min-w-full h-full snap-center flex flex-col justify-start px-6 pt-8 pb-4 relative rounded-lg bg-gradient-to-b from-white/80 to-white/60"
-            :style="{ minHeight: CAROUSEL_SLIDE_MIN_HEIGHT }"
+            class="min-w-full h-auto max-h-[75vh] snap-center flex flex-col justify-between px-6 pt-8 pb-4 relative rounded-lg bg-gradient-to-b from-white/80 to-white/60"
           >
             <h2
-              class="font-space-grotesk text-3xl md:text-4xl font-bold text-neutral-900 mb-lg tracking-tight text-left"
+              class="font-space-grotesk text-2xl font-bold text-neutral-900 mb-6 tracking-tight text-left"
             >
               {{ t("hero4.title") }}
             </h2>
-            <p class="font-inter text-sm text-neutral-700 text-left mb-xl">
+            <p class="font-inter text-sm text-neutral-700 text-left mb-2">
               {{ t("hero4.subtitle") }}
             </p>
 
-            <ul role="list" class="space-y-lg mb-lg">
-              <BenefitItem v-for="i in 3" :key="i" :benefit="i" />
-            </ul>
-
-            <button
-              @click="nextSlide"
-              aria-label="Accéder au formulaire de contact"
-              class="w-full mt-sm py-2 bg-primary hover:bg-primary/90 text-black font-semibold rounded-full flex items-center justify-center gap-2 transition-all focus:ring-2 focus:ring-primary focus:ring-offset-2"
+            <div
+              class="flex-1 flex items-center justify-center -mt-4"
+              ref="benefitsMobileRef"
             >
-              <span>{{ t("hero4.form.cta") }}</span>
-              <ChevronRight class="w-4 h-4" />
-            </button>
+              <div class="space-y-6 w-full">
+                <div
+                  class="flex items-start gap-3 transition-all duration-1500 ease-out transform"
+                  :class="
+                    showBenefits
+                      ? 'opacity-100 translate-x-0'
+                      : 'opacity-0 -translate-x-12'
+                  "
+                >
+                  <PencilLine
+                    class="w-8 h-8 text-primary shrink-0 self-center"
+                  />
+                  <div>
+                    <p
+                      class="font-heading text-base font-bold text-neutral-900 leading-tight"
+                    >
+                      {{ t("hero4.benefit1.title") }}
+                    </p>
+                    <p class="font-body text-sm text-neutral-600 mt-1">
+                      {{ t("hero4.benefit1.description") }}
+                    </p>
+                  </div>
+                </div>
+                <div
+                  class="flex items-start gap-3 transition-all duration-1500 ease-out transform"
+                  style="transition-delay: 1500ms"
+                  :class="
+                    showBenefits
+                      ? 'opacity-100 translate-x-0'
+                      : 'opacity-0 -translate-x-12'
+                  "
+                >
+                  <ClipboardPen
+                    class="w-8 h-8 text-primary shrink-0 self-center"
+                  />
+                  <div>
+                    <p
+                      class="font-heading text-base font-bold text-neutral-900 leading-tight"
+                    >
+                      {{ t("hero4.benefit2.title") }}
+                    </p>
+                    <p class="font-body text-sm text-neutral-600 mt-1">
+                      {{ t("hero4.benefit2.description") }}
+                    </p>
+                  </div>
+                </div>
+                <div
+                  class="flex items-start gap-3 transition-all duration-1500 ease-out transform"
+                  style="transition-delay: 3000ms"
+                  :class="
+                    showBenefits
+                      ? 'opacity-100 translate-x-0'
+                      : 'opacity-0 -translate-x-12'
+                  "
+                >
+                  <LaptopMinimalCheck
+                    class="w-8 h-8 text-primary shrink-0 self-center"
+                  />
+                  <div>
+                    <p
+                      class="font-heading text-base font-bold text-neutral-900 leading-tight"
+                    >
+                      {{ t("hero4.benefit3.title") }}
+                    </p>
+                    <p class="font-body text-sm text-neutral-600 mt-1">
+                      {{ t("hero4.benefit3.description") }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <p
+                class="flex gap-2 justify-center items-center animate-pulse-slow"
+              >
+                Swipe pour continuer
+                <span class="arrow-anim text-primary text-3xl font-bold"
+                  >→</span
+                >
+              </p>
+            </div>
           </div>
 
           <div
-            class="-mt-4 min-w-full h-full snap-center flex flex-col justify-start px-6 pt-8 pb-4 relative rounded-lg bg-gradient-to-b from-white/80 to-white/60"
+            class="min-w-full h-full snap-center flex flex-col justify-start px-6 pt-8 pb-4 relative rounded-lg bg-gradient-to-b from-white/80 to-white/60"
             :style="{
-              minHeight: CAROUSEL_SLIDE_MIN_HEIGHT,
-              maxHeight: CAROUSEL_SLIDE_MIN_HEIGHT,
+              minHeight: '75vh',
+              maxHeight: '75vh',
             }"
           >
             <h2
               class="font-space-grotesk text-xl font-semibold text-neutral-900 mb-md"
             >
-              {{ t("hero4.form.title") }}
+              Dites-m'en plus
             </h2>
 
-            <Hero4ContactForm variant="mobile" @submit="handleSubmit" />
+            <div class="mt-auto mb-2">
+              <Hero4ContactForm variant="mobile" @submit="handleSubmit" />
+            </div>
 
-            <div
-              class="font-inter text-xs text-neutral-600 mt-md text-center space-y-xs"
-            >
-              <p>
+            <div class="mt-auto pt-4">
+              <p class="text-center text-xs">
+                Vous avez une idée précise ?
                 <button
-                  type="button"
-                  aria-label="Ouvrir le formulaire de contact complet"
                   @click="$emit('open-contact-modal')"
-                  class="text-left w-full block text-neutral-600 hover:text-neutral-900 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary"
+                  class="text-cta underline"
                 >
-                  {{ t("hero4.form.modalQuestion") }}
-                  <strong
-                    class="text-yellow-700 underline decoration-yellow-700/50 hover:decoration-yellow-700"
-                  >
-                    {{ t("hero4.form.modalCta") }}
-                  </strong>
+                  Cliquez ici
                 </button>
               </p>
             </div>
@@ -314,7 +378,7 @@ const openModal = () => {
         </div>
       </div>
 
-      <div class="flex justify-center gap-2 mt-4">
+      <div class="flex justify-center gap-2 mt-2">
         <div
           v-for="i in 2"
           :key="i"
@@ -444,31 +508,32 @@ const openModal = () => {
                 <FormInput
                   id="prenom"
                   v-model="formData.prenom"
-                  label="Prénom"
-                  placeholder="Prénom"
+                  :label="t('contact.form.prenom.label')"
+                  :placeholder="t('contact.form.prenom.placeholder')"
                   :error="errors.prenom"
-                  class="!mb-0 [&>div]:!gap-0"
+                  class="!mb-0 [&>div]:!gap-0 desktop-form-input"
                 />
                 <FormInput
                   id="email"
                   type="email"
                   v-model="formData.email"
-                  label="Email"
-                  placeholder="Email"
+                  :label="t('contact.form.email.label')"
+                  :placeholder="t('contact.form.email.placeholder')"
                   :error="errors.email"
-                  class="!mb-0 [&>div]:!gap-0"
+                  class="!mb-0 [&>div]:!gap-0 desktop-form-input"
                 />
               </div>
-              <div class="relative">
+              <div class="relative group">
                 <MessageSquare
-                  class="absolute left-3 top-5 w-5 h-5 text-gray-400 pointer-events-none"
+                  class="absolute left-3 top-5 w-5 h-5 text-gray-400 pointer-events-none group-focus-within:text-black stroke-current stroke-[1.5] transition-colors duration-200"
                   aria-hidden="true"
                 />
                 <textarea
                   id="message"
                   v-model="formData.message"
-                  placeholder="Message..."
-                  class="w-full h-[calc(100%-8px)] px-4 py-2 border-2 border-gray-300 rounded-lg resize-none focus:border-primary/50 focus:ring-[0.5px] focus:ring-primary/20 transition-all duration-200 focus:outline-none mt-2 pl-10"
+                  :placeholder="t('contact.form.message.placeholder')"
+                  :title="errors.message || undefined"
+                  :class="['w-full h-[calc(100%-8px)] px-4 py-2 border-2 rounded-lg resize-none focus:border-primary/50 focus:ring-[0.5px] focus:ring-primary/20 transition-all duration-200 focus:outline-none mt-2 pl-10', errors.message ? 'border-red-500 animate-shake' : 'border-gray-300']"
                 ></textarea>
               </div>
               <div class="flex flex-col justify-between h-full">
@@ -478,6 +543,7 @@ const openModal = () => {
                     v-model="formData.rgpdConsent"
                     label="RGPD"
                     :hint="t('contact.form.rgpdConsent.label')"
+                    :error="errors.rgpdConsent"
                   />
                 </div>
                 <button
@@ -501,10 +567,31 @@ section {
   position: relative;
 }
 
+/* Animation shake pour les erreurs */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25%, 75% { transform: translateX(-4px); }
+  50% { transform: translateX(4px); }
+}
+
+.animate-shake {
+  animation: shake 0.3s ease;
+}
+
+/* Desktop form error styles */
+:deep(.desktop-form-input input[aria-invalid="true"]) {
+  border-color: rgb(239, 68, 68) !important;
+  animation: shake 0.3s ease;
+}
+
+:deep(.desktop-form-input p) {
+  display: none !important;
+}
+
 /* desktop form visuals */
 .bg-cta {
   background-color: #0b0e0e;
-} /* adapte si tu as une variable */
+}
 .text-neutral-400 {
   color: rgba(99, 115, 129, 0.6);
 }
@@ -514,13 +601,11 @@ section {
   resize: none !important;
 }
 
-/* Small visual adjustments */
-@media (min-width: 1024px) {
-  :deep(.font-heading) {
-    font-family: "Space Grotesk", sans-serif;
-  }
-  :deep(.font-body) {
-    font-family: "Inter", sans-serif;
+/* Mobile viewport constraints */
+@media (max-width: 1023px) {
+  #contact {
+    min-width: 375px;
+    max-width: 430px;
   }
 }
 
@@ -540,5 +625,33 @@ section {
 :deep(.hero4-input .text-sm) {
   font-size: 0.9rem;
   line-height: 1.2;
+}
+
+/* Animations pour le swipe CTA */
+@keyframes pulse-slow {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.animate-pulse-slow {
+  animation: pulse-slow 2s infinite;
+}
+@keyframes arrow-move {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(6px);
+  }
+}
+.arrow-anim {
+  animation: arrow-move 1.8s infinite;
+  font-size: 2rem;
+  font-weight: 700;
 }
 </style>

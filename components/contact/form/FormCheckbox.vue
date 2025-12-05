@@ -84,15 +84,7 @@ const handleChange = (event: Event) => {
       </div>
     </div>
 
-    <p
-      v-if="error"
-      :id="`${checkboxId}-error`"
-      class="text-sm text-red-500 font-medium"
-      role="alert"
-      aria-live="polite"
-    >
-      {{ error }}
-    </p>
+    <p class="text-xs text-red-600 font-semibold mt-0.5 min-h-[20px]">{{ error }}</p>
   </div>
 </template>
 
