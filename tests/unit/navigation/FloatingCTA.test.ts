@@ -51,10 +51,8 @@ describe('FloatingCTA - Comportemental', () => {
 
     expect(button.classes()).toContain('fixed')
     expect(button.classes()).toContain('right-12')
+    expect(button.classes()).toContain('top-8')
     expect(button.classes()).toContain('z-50')
-
-    const style = button.attributes('style')
-    expect(style).toContain('top: 32px')
   })
 
   /**
@@ -70,6 +68,6 @@ describe('FloatingCTA - Comportemental', () => {
     const classes = button.classes()
 
     expect(classes).toContain('focus:ring-2')
-    expect(classes).toContain('focus:ring-primary/50')
+    expect(classes).toContain('focus:ring-cta/50')
   })
 })

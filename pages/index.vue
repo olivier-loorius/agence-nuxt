@@ -26,6 +26,14 @@ import Hero4 from "~/components/homepage/hero4/Hero4.vue";
 import Footer from "~/components/footer/Footer.vue";
 import { useContactModal } from "~/composables/useContactModal";
 
+useSeoMeta({
+  title: 'AgenceO - Développeur Web Indépendant | Sites sur mesure',
+  description: 'Développeur web freelance spécialisé dans la création de sites performants, accessibles et sur mesure pour artisans et TPE. Contactez-moi pour votre projet.',
+  ogTitle: 'AgenceO - Développeur Web Indépendant',
+  ogDescription: 'Sites web performants et inclusifs pour artisans et micro-entreprises',
+  ogType: 'website'
+})
+
 /**
  * Contact modal composable
  */

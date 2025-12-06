@@ -6,24 +6,26 @@ import { useNavigation } from '~/composables/useNavigation'
 import { useScrollNav } from '~/composables/useScrollNav'
 import { useContactModal } from '~/composables/useContactModal'
 
-/**
- * Mobile menu state
- * @type {Ref<boolean>}
- */
 const isMobileMenuOpen = ref(false)
+const activeLink = ref('#home')
 
-/**
- * Current active section for link highlighting
- * @type {Ref<string>}
- */
-const activeSection = ref('home')
 const { t } = useI18n()
 const { navLinks } = useNavigation()
 const { showNav } = useScrollNav()
 const { openModal } = useContactModal()
 
 const scrollToSection = (href: string) => {
-  const sectionId = href.slice(1) 
+  activeLink.value = href
+
+  // Special case for home section
+  if (href === '#home') {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+    isMobileMenuOpen.value = false
+    return
+  }
+
+  // Scroll to section element
+  const sectionId = href.slice(1)
   const element = document.getElementById(sectionId)
   if (element) {
     element.scrollIntoView({ behavior: 'smooth' })
@@ -34,6 +36,11 @@ const scrollToSection = (href: string) => {
 const handleCtaClick = () => {
   openModal()
   isMobileMenuOpen.value = false
+}
+
+const handleLogoClick = () => {
+  activeLink.value = '#home'
+  window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 </script>
 
@@ -51,45 +58,39 @@ const handleCtaClick = () => {
       pointerEvents: showNav ? 'auto' : 'none'
     }"
   >
-    <div v-if="activeSection === 'home'" class="font-space-grotesk text-primary font-bold text-xl focus:outline-2 focus:outline-primary focus:outline-offset-2 rounded inline-block">
-      O
-    </div>
     <NuxtLink
-      v-else
-      to="/#home"
+      to="/"
       :aria-label="t('nav.logoAria')"
-      class="font-space-grotesk text-primary font-bold text-xl hover:text-primary/80 transition-transform duration-300 hover:rotate-6 focus:outline-2 focus:outline-primary focus:outline-offset-2 rounded inline-block"
+      :class="['font-manrope text-primary font-bold text-xl focus:outline-2 focus:outline-primary focus:outline-offset-2 rounded inline-block transition-all duration-300', activeLink === '#home' ? 'cursor-default' : 'hover:text-primary/80 hover:rotate-6']"
       data-section="home"
+      @click.prevent="handleLogoClick"
     >
       O
     </NuxtLink>
 
-    <div class="flex items-center gap-10">
+    <div class="flex items-center gap-10" role="menu">
       <NuxtLink
         v-for="link in navLinks"
         :key="link.label"
         :to="`/#${link.href.slice(1)}`"
         :aria-label="`Aller à la section ${link.label}`"
-        :class="['relative font-inter text-sm font-semibold text-black hover:text-black/60 transition-all duration-300 group focus:outline-2 focus:outline-primary focus:outline-offset-2 rounded px-2 flex items-center gap-2 hover:scale-105', link.href.slice(1) === activeSection ? 'border-b-4 border-primary text-black' : '']"
+        role="menuitem"
+        :class="['relative font-inter text-sm font-semibold text-black hover:text-neutral-600 transition-all duration-300 group focus:outline-2 focus:outline-primary focus:outline-offset-2 rounded px-2 flex items-center gap-2 hover:scale-105 after:absolute after:-bottom-2 after:left-0 after:h-1 after:bg-primary after:transition-all after:duration-300', activeLink === link.href ? 'after:w-full' : 'after:w-0 hover:after:w-full']"
         :data-section="link.href.slice(1)"
         @click="scrollToSection(link.href)"
       >
-        <component :is="link.icon" class="w-4 h-4 transition-transform duration-300 group-hover:scale-110" />
+        <component :is="link.icon" class="w-4 h-4 transition-transform duration-300 group-hover:scale-110" aria-hidden="true" />
         {{ link.label }}
-        <span v-if="link.href.slice(1) !== activeSection" class="absolute left-0 w-0 h-1 bg-primary transition-all duration-300 group-hover:w-full" style="bottom: -6px;"></span>
       </NuxtLink>
     </div>
   </nav>
 
-  <div v-if="activeSection === 'home'" class="lg:hidden fixed top-8 left-8 z-50 font-space-grotesk text-primary font-bold text-xl focus:outline-2 focus:outline-primary focus:outline-offset-2 rounded inline-block">
-    O
-  </div>
   <NuxtLink
-    v-else
-    to="/#home"
+    to="/"
     :aria-label="t('nav.logoAria')"
-    class="lg:hidden fixed top-8 left-8 z-50 font-space-grotesk text-primary font-bold text-xl hover:text-primary/80 transition-transform duration-300 hover:rotate-6 focus:outline-2 focus:outline-primary focus:outline-offset-2 rounded inline-block"
+    :class="['lg:hidden fixed top-8 left-8 z-50 font-manrope text-primary font-bold text-xl focus:outline-2 focus:outline-primary focus:outline-offset-2 rounded inline-block transition-all duration-300', activeLink === '#home' ? 'cursor-default' : 'hover:text-primary/80 hover:rotate-6']"
     data-section="home"
+    @click.prevent="handleLogoClick"
   >
     O
   </NuxtLink>
@@ -138,13 +139,14 @@ const handleCtaClick = () => {
       class="lg:hidden fixed top-20 left-4 right-4 z-50 mx-auto bg-white/90 backdrop-blur-xl rounded-xl shadow-2xl p-6 max-w-sm"
       @click.stop
     >
-      <nav class="flex flex-col gap-3 mb-6" aria-label="Navigation du menu">
+      <nav class="flex flex-col gap-3 mb-6" role="menu" aria-label="Navigation du menu">
         <NuxtLink
           v-for="(link, i) in navLinks"
           :key="link.label"
           :to="`/#${link.href.slice(1)}`"
           :aria-label="`Aller à la section ${link.label}`"
-          class="text-lg font-manrope font-semibold text-gray-900 hover:text-primary transition-all duration-300 py-2 px-3 rounded focus:outline-2 focus:outline-primary focus:outline-offset-2 flex items-center gap-2 hover:scale-105 hover:bg-gray-100"
+          role="menuitem"
+          class="text-lg font-manrope font-semibold text-gray-900 hover:text-neutral-600 transition-all duration-300 py-2 px-3 rounded focus:outline-2 focus:outline-primary focus:outline-offset-2 flex items-center gap-2 hover:scale-105 hover:bg-gray-100"
           :data-section="link.href.slice(1)"
           @click="scrollToSection(link.href); isMobileMenuOpen = false"
           :style="{
@@ -154,7 +156,7 @@ const handleCtaClick = () => {
             transition: 'all 0.4s ease'
           }"
         >
-          <component :is="link.icon" class="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
+          <component :is="link.icon" class="w-5 h-5 transition-transform duration-300 group-hover:scale-110" aria-hidden="true" />
           {{ link.label }}
         </NuxtLink>
       </nav>
@@ -166,7 +168,7 @@ const handleCtaClick = () => {
         :style="{ borderRadius: '8px' }"
         @click="handleCtaClick"
       >
-        <Mail class="w-5 h-5 transition-transform duration-300 hover:scale-110" />
+        <Mail class="w-5 h-5 transition-transform duration-300 hover:scale-110" aria-hidden="true" />
         {{ t('nav.cta') }}
       </button>
     </div>
@@ -193,5 +195,10 @@ const handleCtaClick = () => {
 .scale-modal-leave-to {
   opacity: 0;
   transform: scale(0.85);
+}
+
+/* Ensure after: pseudo-element works */
+:deep(a)::after {
+  content: '';
 }
 </style>

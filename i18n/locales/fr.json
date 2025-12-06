@@ -17,22 +17,27 @@
   },
   "hero4": {
     "bgAlt": "Fond abstrait représentant un environnement de travail",
+    "header": {
+      "title": "Une idée, même floue ? Parlons-en.",
+      "subtitle": "Parlez-moi de vos idées, même floues. Dites-moi où vous en êtes : je vous aide à avancer et je vous propose des solutions adaptées."
+    },
     "title": "Vous avez une idée, même floue ? On peut en parler avant de se lancer.",
     "subtitle": "Parlez-moi de vos idées, même floues. Dites-moi où vous en êtes : je vous aide à avancer et je vous propose des solutions adaptées.",
     "benefit1": {
-      "title": "Un site qui vous ressemble",
-      "description": "Je crée un site adapté à votre activité, vos idées et votre identité. Rien de standard, rien de copié : c’est votre site."
+      "title": "Donnez forme à votre idée",
+      "description": "On structure votre vision pour la rendre lisible et compréhensible immédiatement."
     },
     "benefit2": {
-      "title": "On vous explique simplement",
-      "description": "Pas de termes compliqués. Si vous ne comprenez pas, je reformule jusqu'à ce que ce soit clair."
+      "title": "Avancez avec plus de clarté",
+      "description": "Je vous accompagne pour définir ce qui compte vraiment dans votre projet."
     },
     "benefit3": {
-      "title": "Être trouvé par vos clients",
-      "description": "Un bon site, c'est un site qui vous fait gagner des clients. C'est ça qui compte."
+      "title": "Une présence unique",
+      "description": "Votre image, vos valeurs et vos objectifs trouvent leurs place."
     },
     "form": {
       "title": "Dites-m'en plus",
+      "intro": "Laissez-moi un message. Vous avez une idée précise ? Cliquez ici.",
       "prenom": "Prénom",
       "email": "Email",
       "message": "Votre projet en quelques mots",
@@ -40,7 +45,18 @@
       "submit": "Envoyer",
       "cta": "Contactez-moi",
       "modalQuestion": "Vous avez une idée précise ?",
-      "modalCta": "Cliquez ici"
+      "modalCta": "Cliquez ici",
+      "mobileTitle": "Dites-m'en plus",
+      "desktopIntro": "Dites-m'en plus en quelques mots. Ou si vous avez une idée précise ?",
+      "submitButton": "Envoyer",
+      "detailsPrompt": "Vous avez une idée précise ?",
+      "detailsLink": "Cliquez ici"
+    },
+    "carousel": {
+      "swipeHint": "Swipe pour continuer",
+      "ariaLabel": "Navigation entre formulaires",
+      "slideAnnouncement": "Slide {current} sur {total}",
+      "goToSlide": "Aller au slide {slide}"
     }
   },
   "contact": {
@@ -53,7 +69,7 @@
     "form": {
       "prenom": {
         "label": "Prénom",
-        "placeholder": "John",
+        "placeholder": "Prénom *",
         "error": "Le prénom doit contenir au moins 2 caractères"
       },
       "nom": {
@@ -63,7 +79,7 @@
       },
       "email": {
         "label": "Email",
-        "placeholder": "Email",
+        "placeholder": "Email *",
         "error": "Veuillez entrer une adresse email valide"
       },
       "telephone": {
@@ -93,8 +109,8 @@
         "error": "Veuillez décrire votre activité (au moins 10 caractères)"
       },
       "message": {
-        "label": "Détails de votre projet",
-        "placeholder": "Parlez-nous de votre projet, vos objectifs, vos attentes...",
+        "label": "Message",
+        "placeholder": "Message *",
         "error": "Le message doit contenir au moins 20 caractères"
       },
       "autorisationRappel": {

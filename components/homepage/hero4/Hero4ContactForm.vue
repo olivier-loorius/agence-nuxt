@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { User, Mail, MessageSquare } from 'lucide-vue-next'
+import { User, Mail, MessageSquare, Send } from 'lucide-vue-next'
 import FormInput from '~/components/contact/form/FormInput.vue'
 import FormTextarea from '~/components/contact/form/FormTextarea.vue'
 import FormCheckbox from '~/components/contact/form/FormCheckbox.vue'
@@ -28,7 +28,7 @@ const formClasses = computed(() => {
   if (props.variant === 'desktop') {
     return 'space-y-0.5 flex-1 flex flex-col'
   }
-  return 'space-y-md'
+  return 'space-y-3'
 })
 
 const inputWrapperClasses = computed(() => {
@@ -49,14 +49,14 @@ const buttonClasses = computed(() => {
   if (props.variant === 'desktop') {
     return 'w-auto mx-0 px-8 py-3.5 ml-auto bg-black hover:bg-black/80 text-white text-base font-bold rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2'
   }
-  return 'w-full mt-md py-2 bg-black hover:bg-black/80 text-white font-semibold rounded-full flex items-center justify-center transition-all'
+  return 'w-full mt-2 py-3 bg-black hover:bg-black/80 text-white font-semibold rounded-lg flex items-center justify-center gap-2 transition-all'
 })
 
 const checkboxWrapperClasses = computed(() => {
   if (props.variant === 'desktop') {
     return 'flex items-start gap-2 mb-0'
   }
-  return ''
+  return 'mt-2'
 })
 
 const textareaRows = computed(() => {
@@ -127,6 +127,7 @@ const handleSubmit = async () => {
         class="text-xs"
         :required="true"
         :compact="true"
+        :error="errors.rgpdConsent"
       />
 
       <button
@@ -134,6 +135,7 @@ const handleSubmit = async () => {
         :class="buttonClasses"
       >
         {{ t('hero4.form.submit') }}
+        <Send class="w-4 h-4" />
       </button>
     </div>
   </form>

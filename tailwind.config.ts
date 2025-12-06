@@ -12,13 +12,35 @@ export default {
   ],
   theme: {
     fontFamily: {
-      "space-grotesk": ["Space Grotesk", "sans-serif"],
+      manrope: ["Manrope", "sans-serif"],
       inter: ["Inter", "sans-serif"],
     },
     extend: {
       colors: {
-        primary: "#EAB308",
-        accent: "#704E2E",
+        primary: {
+          DEFAULT: "#EAB308",
+          foreground: "#0A0A0A",
+        },
+        accent: {
+          DEFAULT: "#550C18",
+        },
+        cta: {
+          DEFAULT: "#be5241",
+          foreground: "#ffffff",
+          50: "#f8eeec",
+          100: "#f1ddd9",
+          200: "#e3bbb3",
+          300: "#d5998d",
+          400: "#c77767",
+          500: "#b95541",
+          600: "#be5241",
+          700: "#a63d2e",
+          800: "#8e3326",
+          900: "#76291e",
+          950: "#3d140f",
+        },
+        success: "#10B981",
+        destructive: "#EF4444",
         neutral: {
           50: "#F5F5F5",
           900: "#0A0A0A",
