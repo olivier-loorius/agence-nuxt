@@ -62,6 +62,7 @@ export const useHero4Carousel = (carouselRef: Ref<HTMLElement | null>) => {
 
   return {
     currentSlide,
+    goToSlide,
     nextSlide,
     prevSlide
   }

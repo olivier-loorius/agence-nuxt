@@ -20,10 +20,6 @@ const emit = defineEmits<{ "open-contact-modal": [] }>();
 
 const { t } = useI18n();
 const { handleSubmit, errors, formData } = useHero4Form();
-const INTERSECTION_THRESHOLD = 0.35;
-const RESET_DELAY_MS = 60;
-const SCROLL_THROTTLE_MS = 100;
-const CAROUSEL_SLIDES_COUNT = 2;
 
 useHead({
   script: [
@@ -34,6 +30,7 @@ useHead({
         "@type": "ContactPoint",
         contactType: "Service client",
         availableLanguage: "fr",
+        areaServed: "FR"
       }),
     },
   ],
@@ -45,7 +42,7 @@ const refs = {
   benefits: ref<HTMLElement | null>(null),
   benefitsMobile: ref<HTMLElement | null>(null),
 };
-const { currentSlide, nextSlide, prevSlide } = useHero4Carousel(refs.carousel);
+const { currentSlide, goToSlide } = useHero4Carousel(refs.carousel);
 
 const resetCarousel = () => {
   if (!refs.carousel.value) return;
@@ -54,10 +51,10 @@ const resetCarousel = () => {
   currentSlide.value = 0;
   setTimeout(() => {
     isResetting.value = false;
-  }, RESET_DELAY_MS);
+  }, 60);
 };
 
-const { isCarouselVisible, isResetting, showBenefits } = useHero4Observers(refs, resetCarousel);
+const { isResetting, showBenefits } = useHero4Observers(refs, resetCarousel);
 
 const benefits = computed(() => [
   {
@@ -100,13 +97,16 @@ const openModal = () => {
 
     <div
       class="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"
+      aria-hidden="true"
     />
     <div
       class="absolute bottom-0 left-0 w-80 h-80 bg-primary/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"
+      aria-hidden="true"
     />
 
     <div
       class="absolute bottom-0 left-0 w-full h-64 bg-gradient-to-b from-transparent to-neutral-900 pointer-events-none z-0"
+      aria-hidden="true"
     />
 
     <div
@@ -115,9 +115,9 @@ const openModal = () => {
       <div
         :ref="refs.carousel"
         role="region"
-        aria-label="Navigation entre formulaires"
+        :aria-label="t('hero4.carousel.ariaLabel')"
         tabindex="0"
-        class="carousel-container w-full h-[calc(100vh-12rem)] overflow-x-auto snap-x snap-proximity scroll-smooth scrollbar-hide"
+        class="carousel-container w-full h-[calc(100vh-12rem)] overflow-x-auto snap-x snap-proximity scroll-smooth scrollbar-hide focus:outline-2 focus:outline-primary focus:outline-offset-2"
       >
         <div class="flex flex-nowrap h-full gap-2">
           <div
@@ -153,11 +153,11 @@ const openModal = () => {
                     class="w-8 h-8 text-primary shrink-0 self-center"
                   />
                   <div>
-                    <p
+                    <h3
                       class="font-heading text-base font-bold text-neutral-900 leading-tight"
                     >
                       {{ benefit.title }}
-                    </p>
+                    </h3>
                     <p class="font-body text-sm text-neutral-600 mt-1">
                       {{ benefit.desc }}
                     </p>
@@ -170,8 +170,8 @@ const openModal = () => {
               <p
                 class="flex gap-2 justify-center items-center animate-pulse-slow"
               >
-                Swipe pour continuer
-                <span class="arrow-anim text-primary text-3xl font-bold"
+                {{ t('hero4.carousel.swipeHint') }}
+                <span class="arrow-anim text-primary text-3xl font-bold" aria-hidden="true"
                   >→</span
                 >
               </p>
@@ -188,7 +188,7 @@ const openModal = () => {
             <h2
               class="font-space-grotesk text-xl font-semibold text-neutral-900 mb-md"
             >
-              Dites-m'en plus
+              {{ t('hero4.form.mobileTitle') }}
             </h2>
 
             <div class="mt-auto mb-2">
@@ -197,12 +197,12 @@ const openModal = () => {
 
             <div class="mt-auto pt-1">
               <p class="text-center text-xs">
-                Vous avez une idée précise ?
+                {{ t('hero4.form.detailsPrompt') }}
                 <button
                   @click="$emit('open-contact-modal')"
                   class="text-cta underline"
                 >
-                  Cliquez ici
+                  {{ t('hero4.form.detailsLink') }}
                 </button>
               </p>
             </div>
@@ -210,19 +210,23 @@ const openModal = () => {
         </div>
       </div>
 
-      <div class="flex justify-center gap-2 mt-2">
-        <div
+      <div class="flex justify-center gap-2 mt-2" role="tablist" aria-label="Navigation slides">
+        <button
           v-for="i in 2"
           :key="i"
+          role="tab"
+          :aria-selected="currentSlide === i - 1"
+          :aria-label="t('hero4.carousel.goToSlide', { slide: i })"
+          @click="goToSlide(i - 1)"
           :class="[
             'w-2 h-2 rounded-full transition-all',
-            currentSlide === i - 1 ? 'bg-primary' : 'bg-neutral-300',
+            currentSlide === i - 1 ? 'bg-primary' : 'bg-neutral-300'
           ]"
         />
       </div>
 
       <div aria-live="polite" class="sr-only">
-        Slide {{ currentSlide + 1 }} sur 2
+        {{ t('hero4.carousel.slideAnnouncement', { current: currentSlide + 1, total: 2 }) }}
       </div>
     </div>
     <div class="hidden lg:block w-full h-full relative z-10">
@@ -270,14 +274,13 @@ const openModal = () => {
           </div>
           <div>
             <p class="font-body text-lg text-neutral-700 mb-6">
-              Dites-m'en plus en quelques mots. Ou si vous avez une idée précise
-              ?
+              {{ t('hero4.form.desktopIntro') }}
               <button
                 type="button"
                 @click="openModal"
                 class="text-primary underline hover:text-primary/80 hover:decoration-2 transition-all"
               >
-                Cliquez ici</button
+                {{ t('hero4.form.detailsLink') }}</button
               >.
             </p>
             <form
@@ -304,6 +307,7 @@ const openModal = () => {
                 />
               </div>
               <div class="relative group">
+                <label for="message" class="sr-only">{{ t('contact.form.message.label') }}</label>
                 <MessageSquare
                   class="absolute left-3 top-5 w-5 h-5 text-gray-400 pointer-events-none group-focus-within:text-black stroke-current stroke-[1.5] transition-colors duration-200"
                   aria-hidden="true"
@@ -335,7 +339,7 @@ const openModal = () => {
                   type="submit"
                   class="bg-cta text-white w-full py-3 rounded-lg hover:bg-cta/90 transition flex items-center justify-center gap-2"
                 >
-                  Envoyer
+                  {{ t('hero4.form.submitButton') }}
                   <Send class="w-4 h-4" aria-hidden="true" />
                 </button>
               </div>

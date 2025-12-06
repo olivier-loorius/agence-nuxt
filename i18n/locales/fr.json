@@ -45,7 +45,18 @@
       "submit": "Envoyer",
       "cta": "Contactez-moi",
       "modalQuestion": "Vous avez une idée précise ?",
-      "modalCta": "Cliquez ici"
+      "modalCta": "Cliquez ici",
+      "mobileTitle": "Dites-m'en plus",
+      "desktopIntro": "Dites-m'en plus en quelques mots. Ou si vous avez une idée précise ?",
+      "submitButton": "Envoyer",
+      "detailsPrompt": "Vous avez une idée précise ?",
+      "detailsLink": "Cliquez ici"
+    },
+    "carousel": {
+      "swipeHint": "Swipe pour continuer",
+      "ariaLabel": "Navigation entre formulaires",
+      "slideAnnouncement": "Slide {current} sur {total}",
+      "goToSlide": "Aller au slide {slide}"
     }
   },
   "contact": {
