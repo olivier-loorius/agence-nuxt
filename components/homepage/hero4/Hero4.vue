@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from "vue";
+import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
-import { useScroll, useResizeObserver, watchThrottled } from "@vueuse/core";
-import { useRouter } from "vue-router";
 import { useHead } from "#app";
 import {
   PencilLine,
@@ -14,12 +12,14 @@ import {
 import Hero4ContactForm from "~/components/homepage/hero4/Hero4ContactForm.vue";
 import FormInput from "~/components/contact/form/FormInput.vue";
 import FormCheckbox from "~/components/contact/form/FormCheckbox.vue";
-import { useContactForm } from "~/composables/useContactForm";
+import { useHero4Form } from "~/composables/useHero4Form";
+import { useHero4Carousel } from "~/composables/useHero4Carousel";
+import { useHero4Observers } from "~/composables/useHero4Observers";
 
 const emit = defineEmits<{ "open-contact-modal": [] }>();
 
 const { t } = useI18n();
-const { validate, errors, formData } = useContactForm();
+const { handleSubmit, errors, formData } = useHero4Form();
 const INTERSECTION_THRESHOLD = 0.35;
 const RESET_DELAY_MS = 60;
 const SCROLL_THROTTLE_MS = 100;
@@ -39,171 +39,46 @@ useHead({
   ],
 });
 
-const sectionRef = ref<HTMLElement | null>(null);
-const carouselRef = ref<HTMLElement | null>(null);
-const benefitsRef = ref<HTMLElement | null>(null);
-const benefitsMobileRef = ref<HTMLElement | null>(null);
-const currentSlide = ref(0);
-const isCarouselVisible = ref(true);
-const isResetting = ref(false);
-const slideWidth = ref(1);
-const showBenefits = ref(false);
-const lastScrollY = ref(0);
-
-let observer: IntersectionObserver | null = null;
-let benefitsObserver: IntersectionObserver | null = null;
-let removeAfterEach: (() => void) | null = null;
+const refs = {
+  section: ref<HTMLElement | null>(null),
+  carousel: ref<HTMLElement | null>(null),
+  benefits: ref<HTMLElement | null>(null),
+  benefitsMobile: ref<HTMLElement | null>(null),
+};
+const { currentSlide, nextSlide, prevSlide } = useHero4Carousel(refs.carousel);
 
 const resetCarousel = () => {
-  if (!carouselRef.value) return;
+  if (!refs.carousel.value) return;
   isResetting.value = true;
-  carouselRef.value.scrollTo({ left: 0, behavior: "auto" });
+  refs.carousel.value.scrollTo({ left: 0, behavior: "auto" });
   currentSlide.value = 0;
   setTimeout(() => {
     isResetting.value = false;
   }, RESET_DELAY_MS);
 };
 
-const setupIntersectionObserver = () => {
-  if (typeof IntersectionObserver === "undefined") return;
-  if (!sectionRef.value) return;
+const { isCarouselVisible, isResetting, showBenefits } = useHero4Observers(refs, resetCarousel);
 
-  observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        const wasVisible = isCarouselVisible.value;
-        isCarouselVisible.value =
-          entry.isIntersecting &&
-          entry.intersectionRatio > INTERSECTION_THRESHOLD;
-        if (
-          !isCarouselVisible.value &&
-          wasVisible &&
-          currentSlide.value === 0
-        ) {
-          resetCarousel();
-        }
-      });
-    },
-    { threshold: [0, 0.5, 1], rootMargin: "-5% 0px -5% 0px" }
-  );
-
-  observer.observe(sectionRef.value);
-};
-
-const setupBenefitsObserver = () => {
-  if (!benefitsRef.value && !benefitsMobileRef.value) return;
-
-  benefitsObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        const currentScrollY = window.scrollY;
-        const scrollingDown = currentScrollY > lastScrollY.value;
-        lastScrollY.value = currentScrollY;
-
-        if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
-          setTimeout(() => {
-            showBenefits.value = true;
-          }, 500);
-        } else if (!scrollingDown) {
-          const footerVisible =
-            document.querySelector("footer")?.getBoundingClientRect().top <
-            window.innerHeight;
-          if (!footerVisible) {
-            showBenefits.value = false;
-          }
-        }
-      });
-    },
-    { threshold: [0.5] }
-  );
-
-  if (benefitsRef.value) {
-    benefitsObserver.observe(benefitsRef.value);
-  }
-  if (benefitsMobileRef.value) {
-    benefitsObserver.observe(benefitsMobileRef.value);
-  }
-};
-
-const router = useRouter();
-
-onMounted(() => {
-  if (typeof window === "undefined") return;
-  setupIntersectionObserver();
-  setupBenefitsObserver();
-  removeAfterEach = router.afterEach(() => resetCarousel());
-  window.addEventListener("keydown", handleKeyboard);
-});
-
-onBeforeUnmount(() => {
-  if (observer && sectionRef.value) {
-    observer.unobserve(sectionRef.value);
-    observer.disconnect();
-    observer = null;
-  }
-  if (benefitsObserver && benefitsRef.value) {
-    benefitsObserver.unobserve(benefitsRef.value);
-  }
-  if (benefitsObserver && benefitsMobileRef.value) {
-    benefitsObserver.unobserve(benefitsMobileRef.value);
-  }
-  if (removeAfterEach) {
-    removeAfterEach();
-    removeAfterEach = null;
-  }
-  window.removeEventListener("keydown", handleKeyboard);
-});
-
-useResizeObserver(carouselRef, (entries) => {
-  const carouselElement = entries[0]?.target as HTMLElement | undefined;
-  if (carouselElement) slideWidth.value = carouselElement.clientWidth;
-});
-
-const { x: scrollX } = useScroll(carouselRef);
-
-watchThrottled(
-  scrollX,
-  (scrollValue: number) => {
-    if (isResetting.value) return;
-    const width = slideWidth.value || (carouselRef.value?.clientWidth ?? 1);
-    currentSlide.value = Math.round(scrollValue / width);
+const benefits = computed(() => [
+  {
+    icon: PencilLine,
+    title: t("hero4.benefit1.title"),
+    desc: t("hero4.benefit1.description"),
+    delay: 0,
   },
-  { throttle: SCROLL_THROTTLE_MS }
-);
-
-const goToSlide = (index: number) => {
-  if (!carouselRef.value) return;
-  const width = carouselRef.value.clientWidth;
-  carouselRef.value.scrollTo({ left: index * width, behavior: "smooth" });
-  currentSlide.value = index;
-};
-
-const nextSlide = () => {
-  goToSlide(currentSlide.value + 1);
-  carouselRef.value?.focus();
-};
-
-const prevSlide = () => {
-  goToSlide(Math.max(0, currentSlide.value - 1));
-  carouselRef.value?.focus();
-};
-
-const handleKeyboard = (e: KeyboardEvent) => {
-  if (!carouselRef.value) return;
-  if (e.key === "ArrowLeft") prevSlide();
-  if (e.key === "ArrowRight") nextSlide();
-};
-
-const handleSubmit = async (e?: Event) => {
-  if (e && typeof e.preventDefault === "function") e.preventDefault();
-  const result = await validate();
-  if (!result.valid) {
-    return;
-  }
-  if (result.valid) {
-    console.log("Form ready for API:", result.data);
-  }
-};
+  {
+    icon: ClipboardPen,
+    title: t("hero4.benefit2.title"),
+    desc: t("hero4.benefit2.description"),
+    delay: 1500,
+  },
+  {
+    icon: LaptopMinimalCheck,
+    title: t("hero4.benefit3.title"),
+    desc: t("hero4.benefit3.description"),
+    delay: 3000,
+  },
+]);
 
 const openModal = () => {
   emit("open-contact-modal");
@@ -212,7 +87,7 @@ const openModal = () => {
 
 <template>
   <section
-    ref="sectionRef"
+    :ref="refs.section"
     id="contact"
     class="h-screen snap-start flex flex-col items-center justify-start relative overflow-hidden pt-16 lg:pt-24"
   >
@@ -234,12 +109,11 @@ const openModal = () => {
       class="absolute bottom-0 left-0 w-full h-64 bg-gradient-to-b from-transparent to-neutral-900 pointer-events-none z-0"
     />
 
-    <!-- MOBILE (unchanged) -->
     <div
       class="relative z-10 w-full h-full flex flex-col lg:hidden items-center justify-start px-6 pt-6 pb-4"
     >
       <div
-        ref="carouselRef"
+        :ref="refs.carousel"
         role="region"
         aria-label="Navigation entre formulaires"
         tabindex="0"
@@ -260,74 +134,32 @@ const openModal = () => {
 
             <div
               class="flex-1 flex items-center justify-center -mt-4"
-              ref="benefitsMobileRef"
+              :ref="refs.benefitsMobile"
             >
               <div class="space-y-6 w-full">
                 <div
+                  v-for="(benefit, i) in benefits"
+                  :key="i"
                   class="flex items-start gap-3 transition-all duration-1500 ease-out transform"
+                  :style="{ transitionDelay: `${benefit.delay}ms` }"
                   :class="
                     showBenefits
                       ? 'opacity-100 translate-x-0'
                       : 'opacity-0 -translate-x-12'
                   "
                 >
-                  <PencilLine
+                  <component
+                    :is="benefit.icon"
                     class="w-8 h-8 text-primary shrink-0 self-center"
                   />
                   <div>
                     <p
                       class="font-heading text-base font-bold text-neutral-900 leading-tight"
                     >
-                      {{ t("hero4.benefit1.title") }}
+                      {{ benefit.title }}
                     </p>
                     <p class="font-body text-sm text-neutral-600 mt-1">
-                      {{ t("hero4.benefit1.description") }}
-                    </p>
-                  </div>
-                </div>
-                <div
-                  class="flex items-start gap-3 transition-all duration-1500 ease-out transform"
-                  style="transition-delay: 1500ms"
-                  :class="
-                    showBenefits
-                      ? 'opacity-100 translate-x-0'
-                      : 'opacity-0 -translate-x-12'
-                  "
-                >
-                  <ClipboardPen
-                    class="w-8 h-8 text-primary shrink-0 self-center"
-                  />
-                  <div>
-                    <p
-                      class="font-heading text-base font-bold text-neutral-900 leading-tight"
-                    >
-                      {{ t("hero4.benefit2.title") }}
-                    </p>
-                    <p class="font-body text-sm text-neutral-600 mt-1">
-                      {{ t("hero4.benefit2.description") }}
-                    </p>
-                  </div>
-                </div>
-                <div
-                  class="flex items-start gap-3 transition-all duration-1500 ease-out transform"
-                  style="transition-delay: 3000ms"
-                  :class="
-                    showBenefits
-                      ? 'opacity-100 translate-x-0'
-                      : 'opacity-0 -translate-x-12'
-                  "
-                >
-                  <LaptopMinimalCheck
-                    class="w-8 h-8 text-primary shrink-0 self-center"
-                  />
-                  <div>
-                    <p
-                      class="font-heading text-base font-bold text-neutral-900 leading-tight"
-                    >
-                      {{ t("hero4.benefit3.title") }}
-                    </p>
-                    <p class="font-body text-sm text-neutral-600 mt-1">
-                      {{ t("hero4.benefit3.description") }}
+                      {{ benefit.desc }}
                     </p>
                   </div>
                 </div>
@@ -363,7 +195,7 @@ const openModal = () => {
               <Hero4ContactForm variant="mobile" @submit="handleSubmit" />
             </div>
 
-            <div class="mt-auto pt-4">
+            <div class="mt-auto pt-1">
               <p class="text-center text-xs">
                 Vous avez une idée précise ?
                 <button
@@ -393,8 +225,6 @@ const openModal = () => {
         Slide {{ currentSlide + 1 }} sur 2
       </div>
     </div>
-
-    <!-- DESKTOP : refondue (3 blocs verticaux simulés dans un même écran) -->
     <div class="hidden lg:block w-full h-full relative z-10">
       <div class="max-w-7xl mx-auto px-8 pt-3 pb-12">
         <div class="bg-white/50 backdrop-blur-md rounded-lg p-8">
@@ -407,17 +237,21 @@ const openModal = () => {
             </p>
           </div>
 
-          <div class="mb-10" ref="benefitsRef">
+          <div class="mb-10" :ref="refs.benefits">
             <div class="grid grid-cols-3 gap-8">
               <div
+                v-for="(benefit, i) in benefits"
+                :key="i"
                 class="grid grid-cols-[48px_1fr] gap-4 items-center transition-all duration-1500 ease-out transform"
+                :style="{ transitionDelay: `${benefit.delay}ms` }"
                 :class="
                   showBenefits
                     ? 'opacity-100 translate-y-0'
                     : 'opacity-0 translate-y-12'
                 "
               >
-                <PencilLine
+                <component
+                  :is="benefit.icon"
                   class="w-12 h-12 text-primary shrink-0"
                   aria-hidden="true"
                 />
@@ -425,67 +259,15 @@ const openModal = () => {
                   <h3
                     class="font-heading text-lg font-bold text-neutral-900 mb-1 leading-tight"
                   >
-                    {{ t("hero4.benefit1.title") }}
+                    {{ benefit.title }}
                   </h3>
                   <p class="font-body text-sm text-neutral-600 leading-relaxed">
-                    {{ t("hero4.benefit1.description") }}
-                  </p>
-                </div>
-              </div>
-
-              <div
-                class="grid grid-cols-[48px_1fr] gap-4 items-center transition-all duration-1500 ease-out transform"
-                style="transition-delay: 1500ms"
-                :class="
-                  showBenefits
-                    ? 'opacity-100 translate-y-0'
-                    : 'opacity-0 translate-y-12'
-                "
-              >
-                <ClipboardPen
-                  class="w-12 h-12 text-primary shrink-0"
-                  aria-hidden="true"
-                />
-                <div class="border-l-2 border-neutral-300 pl-4">
-                  <h3
-                    class="font-heading text-lg font-bold text-neutral-900 mb-1 leading-tight"
-                  >
-                    {{ t("hero4.benefit2.title") }}
-                  </h3>
-                  <p class="font-body text-sm text-neutral-600 leading-relaxed">
-                    {{ t("hero4.benefit2.description") }}
-                  </p>
-                </div>
-              </div>
-
-              <div
-                class="grid grid-cols-[48px_1fr] gap-4 items-center transition-all duration-1500 ease-out transform"
-                style="transition-delay: 3000ms"
-                :class="
-                  showBenefits
-                    ? 'opacity-100 translate-y-0'
-                    : 'opacity-0 translate-y-12'
-                "
-              >
-                <LaptopMinimalCheck
-                  class="w-12 h-12 text-primary shrink-0"
-                  aria-hidden="true"
-                />
-                <div class="border-l-2 border-neutral-300 pl-4">
-                  <h3
-                    class="font-heading text-lg font-bold text-neutral-900 mb-1 leading-tight"
-                  >
-                    {{ t("hero4.benefit3.title") }}
-                  </h3>
-                  <p class="font-body text-sm text-neutral-600 leading-relaxed">
-                    {{ t("hero4.benefit3.description") }}
+                    {{ benefit.desc }}
                   </p>
                 </div>
               </div>
             </div>
           </div>
-
-          <!-- MINI-FORM : nouvelle disposition fixe / alignée -->
           <div>
             <p class="font-body text-lg text-neutral-700 mb-6">
               Dites-m'en plus en quelques mots. Ou si vous avez une idée précise
@@ -498,8 +280,6 @@ const openModal = () => {
                 Cliquez ici</button
               >.
             </p>
-
-            <!-- Utilise une hauteur suffisante pour la mise en page souhaitée -->
             <form
               @submit.prevent="handleSubmit"
               class="grid grid-cols-[3fr_5fr_2fr] gap-4 items-stretch p-0"
@@ -533,7 +313,12 @@ const openModal = () => {
                   v-model="formData.message"
                   :placeholder="t('contact.form.message.placeholder')"
                   :title="errors.message || undefined"
-                  :class="['w-full h-[calc(100%-8px)] px-4 py-2 border-2 rounded-lg resize-none focus:border-primary/50 focus:ring-[0.5px] focus:ring-primary/20 transition-all duration-200 focus:outline-none mt-2 pl-10', errors.message ? 'border-red-500 animate-shake' : 'border-gray-300']"
+                  :class="[
+                    'w-full h-[calc(100%-8px)] px-4 py-2 border-2 rounded-lg resize-none focus:border-primary/50 focus:ring-[0.5px] focus:ring-primary/20 transition-all duration-200 focus:outline-none mt-2 pl-10',
+                    errors.message
+                      ? 'border-red-500 animate-shake'
+                      : 'border-gray-300',
+                  ]"
                 ></textarea>
               </div>
               <div class="flex flex-col justify-between h-full">
@@ -567,18 +352,24 @@ section {
   position: relative;
 }
 
-/* Animation shake pour les erreurs */
 @keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25%, 75% { transform: translateX(-4px); }
-  50% { transform: translateX(4px); }
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25%,
+  75% {
+    transform: translateX(-4px);
+  }
+  50% {
+    transform: translateX(4px);
+  }
 }
 
 .animate-shake {
   animation: shake 0.3s ease;
 }
 
-/* Desktop form error styles */
 :deep(.desktop-form-input input[aria-invalid="true"]) {
   border-color: rgb(239, 68, 68) !important;
   animation: shake 0.3s ease;
@@ -588,7 +379,6 @@ section {
   display: none !important;
 }
 
-/* desktop form visuals */
 .bg-cta {
   background-color: #0b0e0e;
 }
@@ -596,12 +386,10 @@ section {
   color: rgba(99, 115, 129, 0.6);
 }
 
-/* Ensure textarea fills column height */
 :deep(.resize-none) {
   resize: none !important;
 }
 
-/* Mobile viewport constraints */
 @media (max-width: 1023px) {
   #contact {
     min-width: 375px;
@@ -609,7 +397,6 @@ section {
   }
 }
 
-/* Keep mobile carousel behaviour unchanged */
 .carousel-container {
   touch-action: pan-y;
 }
@@ -621,13 +408,11 @@ section {
   scrollbar-width: none;
 }
 
-/* Small polish: make FormInput/FormTextarea height consistent if they accept class */
 :deep(.hero4-input .text-sm) {
   font-size: 0.9rem;
   line-height: 1.2;
 }
 
-/* Animations pour le swipe CTA */
 @keyframes pulse-slow {
   0%,
   100% {

@@ -29,7 +29,10 @@
       "Bash(powershell:*)",
       "Bash(npm run test:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(timeout 2 echo:*)",
+      "Bash(timeout 5 echo:*)",
+      "Bash(del nul)"
     ],
     "deny": [],
     "ask": []

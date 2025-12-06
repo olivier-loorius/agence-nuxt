@@ -28,7 +28,7 @@ const formClasses = computed(() => {
   if (props.variant === 'desktop') {
     return 'space-y-0.5 flex-1 flex flex-col'
   }
-  return 'space-y-md'
+  return 'space-y-3'
 })
 
 const inputWrapperClasses = computed(() => {
@@ -49,14 +49,14 @@ const buttonClasses = computed(() => {
   if (props.variant === 'desktop') {
     return 'w-auto mx-0 px-8 py-3.5 ml-auto bg-black hover:bg-black/80 text-white text-base font-bold rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2'
   }
-  return 'w-full mt-md py-3 bg-black hover:bg-black/80 text-white font-semibold rounded-lg flex items-center justify-center gap-2 transition-all'
+  return 'w-full mt-2 py-3 bg-black hover:bg-black/80 text-white font-semibold rounded-lg flex items-center justify-center gap-2 transition-all'
 })
 
 const checkboxWrapperClasses = computed(() => {
   if (props.variant === 'desktop') {
     return 'flex items-start gap-2 mb-0'
   }
-  return ''
+  return 'mt-2'
 })
 
 const textareaRows = computed(() => {
