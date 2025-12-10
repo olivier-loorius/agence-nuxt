@@ -7,13 +7,24 @@
     "cta": "Travaillons ensemble",
     "logoAria": "Retour à l'accueil",
     "menuAria": "Ouvrir le menu",
-    "closeAria": "Fermer le modal"
+    "closeAria": "Fermer le modal",
+    "skipToContent": "Aller au contenu principal"
   },
   "hero1": {
-    "title": "Votre site web, pensé pour vous",
-    "subtitle": "Pas de formules toutes faites. Chaque site est conçu sur-mesure, pour correspondre vraiment à votre activité et vos besoins.",
-    "ctaPrimary": "Parlons de votre projet",
-    "ctaSecondary": "Découvrir ma démarche"
+    "title": {
+      "before": "Agence",
+      "web": "Web",
+      "after": "Sur-Mesure"
+    },
+    "hook": "Artisan, commerçant, association, TPE, PME, indépendant, profession libérale, entrepreneur local... Quel que soit votre métier, votre site web commence ici.",
+    "hookHighlights": ["Artisan", "TPE", "indépendant"],
+    "value": "Gagnez en visibilité sur internet, attirez de nouveaux clients, développez votre activité en ligne. Un site professionnel adapté à vos besoins et votre budget.",
+    "valueHighlights": ["visibilité", "clients", "professionnel"],
+    "ctaIntro": "Parlons de votre projet ensemble. Échange gratuit, conseils personnalisés, sans engagement.",
+    "cta1": "Je me lance",
+    "cta2": "06 11 22 33 44",
+    "cta2AriaLabel": "Appeler le 06 11 22 33 44",
+    "bgAlt": "Développeur web indépendant travaillant sur un projet digital"
   },
   "hero4": {
     "bgAlt": "Fond abstrait représentant un environnement de travail",

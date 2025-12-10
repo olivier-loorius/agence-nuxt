@@ -32,7 +32,10 @@
       "Bash(git commit:*)",
       "Bash(timeout 2 echo:*)",
       "Bash(timeout 5 echo:*)",
-      "Bash(del nul)"
+      "Bash(del nul)",
+      "Bash(if not exist \"tests\\unit\\homepage\\hero4\" mkdir testsunithomepagehero4)",
+      "Bash(mkdir:*)",
+      "WebSearch"
     ],
     "deny": [],
     "ask": []

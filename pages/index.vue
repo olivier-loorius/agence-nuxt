@@ -31,7 +31,37 @@ useSeoMeta({
   description: 'Développeur web freelance spécialisé dans la création de sites performants, accessibles et sur mesure pour artisans et TPE. Contactez-moi pour votre projet.',
   ogTitle: 'AgenceO - Développeur Web Indépendant',
   ogDescription: 'Sites web performants et inclusifs pour artisans et micro-entreprises',
-  ogType: 'website'
+  ogType: 'website',
+  ogUrl: 'https://agenceo.fr',
+  twitterCard: 'summary_large_image',
+  twitterTitle: 'AgenceO - Développeur Web Indépendant',
+  twitterDescription: 'Sites web performants et inclusifs pour artisans et TPE',
+  robots: 'index, follow'
+})
+
+useHead({
+  link: [
+    { rel: 'canonical', href: 'https://agenceo.fr' }
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      children: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'LocalBusiness',
+        name: 'AgenceO',
+        description: 'Développeur web freelance spécialisé dans la création de sites performants pour artisans et TPE',
+        url: 'https://agenceo.fr',
+        telephone: '+33611223344',
+        address: {
+          '@type': 'PostalAddress',
+          addressCountry: 'FR'
+        },
+        priceRange: '€€',
+        openingHours: 'Mo-Fr 09:00-18:00'
+      })
+    }
+  ]
 })
 
 /**
