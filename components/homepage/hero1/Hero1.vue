@@ -1,7 +1,7 @@
 <template>
   <main
     id="main-content"
-    class="relative h-screen snap-start flex items-start md:items-center justify-center overflow-hidden pt-32 md:pt-24 md:pr-16"
+    class="relative h-screen snap-start flex items-start lg:items-center justify-center overflow-hidden pt-32 lg:pt-24 lg:pr-16"
   >
     <NuxtImg
       src="/sigmund-hero.webp"
@@ -19,7 +19,7 @@
     />
 
     <article
-      class="relative z-10 text-white space-y-6 w-full max-w-7xl px-6 md:px-16"
+      class="relative z-10 text-white space-y-6 w-full max-w-7xl px-6 lg:px-16"
     >
       <header>
       <h1
@@ -31,7 +31,7 @@
           y: 0,
           transition: { duration: 1000, delay: 600 },
         }"
-        class="text-4xl md:text-6xl font-bold text-left"
+        class="text-4xl lg:text-6xl font-bold text-left"
       >
         {{ t('hero1.title.before') }} <span class="text-stroke-primary">{{ t('hero1.title.web') }}</span> {{ t('hero1.title.after') }}
       </h1>
@@ -44,7 +44,7 @@
           y: 0,
           transition: { duration: 1000, delay: 1000 },
         }"
-        class="text-base md:text-xl font-manrope font-semibold leading-relaxed text-left"
+        class="text-base lg:text-xl font-manrope font-semibold leading-relaxed text-left"
       >
         <span class="text-primary">Artisan</span>, commerçant, association,
         <span class="text-primary">TPE</span>, PME,
@@ -62,7 +62,7 @@
           y: 0,
           transition: { duration: 1000, delay: 1500 },
         }"
-        class="text-base md:text-lg font-inter leading-relaxed opacity-90 text-left"
+        class="text-base lg:text-lg font-inter leading-relaxed opacity-90 text-left"
       >
         Gagnez en <span class="text-primary">visibilité</span> sur internet,
         attirez de nouveaux <span class="text-primary">clients</span>,
@@ -79,7 +79,7 @@
           y: 0,
           transition: { duration: 1000, delay: 2500 },
         }"
-        class="text-xs md:text-base font-inter font-medium"
+        class="text-xs lg:text-base font-inter font-medium"
       >
         {{ t("hero1.ctaIntro") }}
       </p>
@@ -92,11 +92,11 @@
           y: 0,
           transition: { duration: 1000, delay: 3500 },
         }"
-        class="flex flex-col-reverse sm:flex-row gap-4 justify-center md:justify-start pt-6"
+        class="flex flex-col-reverse lg:flex-row gap-4 justify-center lg:justify-start pt-6"
       >
         <button
           @click="handleOpenModal"
-          class="min-w-[240px] px-8 py-3 bg-black text-white font-manrope font-bold text-base rounded-lg hover:bg-black/80 focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-2 transition-all shadow-lg flex items-center gap-2 justify-center w-full sm:w-auto"
+          class="min-w-[240px] px-8 py-3 bg-black text-white font-manrope font-bold text-base rounded-lg hover:bg-black/80 focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-2 transition-all shadow-lg flex items-center gap-2 justify-center w-full lg:w-auto"
         >
           <Mail class="w-5 h-5" />
           {{ t("hero1.cta1") }}
@@ -104,7 +104,7 @@
         <a
           href="tel:+33611223344"
           :aria-label="t('hero1.cta2AriaLabel')"
-          class="min-w-[240px] px-6 py-3 bg-transparent border-2 border-primary text-white font-manrope font-bold text-base rounded-lg hover:bg-primary hover:text-black focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2 transition-all flex items-center gap-3 justify-center w-full sm:w-auto"
+          class="min-w-[240px] px-6 py-3 bg-transparent border-2 border-primary text-white font-manrope font-bold text-base rounded-lg hover:bg-primary hover:text-black focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2 transition-all flex items-center gap-3 justify-center w-full lg:w-auto"
         >
           <Phone class="w-5 h-5" />
           {{ t("hero1.cta2") }}

@@ -5,6 +5,7 @@ import { Mail } from 'lucide-vue-next'
 import { useNavigation } from '~/composables/useNavigation'
 import { useScrollNav } from '~/composables/useScrollNav'
 import { useContactModal } from '~/composables/useContactModal'
+import { useViewMode } from '~/composables/useViewMode'
 
 const isMobileMenuOpen = ref(false)
 const activeLink = ref('#home')
@@ -13,6 +14,7 @@ const { t } = useI18n()
 const { navLinks } = useNavigation()
 const { showNav } = useScrollNav()
 const { openModal } = useContactModal()
+const { isDesktop, isMobile } = useViewMode()
 
 const scrollToSection = (href: string) => {
   activeLink.value = href
@@ -49,9 +51,10 @@ const handleLogoClick = () => {
     {{ t('nav.skipToContent') }}
   </a>
   <nav
+    v-if="isDesktop"
     role="navigation"
     aria-label="Navigation principale"
-    class="hidden lg:flex fixed left-8 z-50 h-14 bg-white/95 items-center gap-12 transition-all duration-500"
+    class="flex fixed left-8 z-50 h-14 bg-white/95 items-center gap-12 transition-all duration-500"
     :style="{
       top: '32px',
       padding: '0 32px',
@@ -89,9 +92,10 @@ const handleLogoClick = () => {
   </nav>
 
   <NuxtLink
+    v-if="isMobile"
     to="/"
     :aria-label="t('nav.logoAria')"
-    :class="['lg:hidden fixed top-8 left-8 z-50 font-manrope text-primary font-bold text-xl focus:outline-2 focus:outline-primary focus:outline-offset-2 rounded inline-block transition-all duration-300', activeLink === '#home' ? 'cursor-default' : 'hover:text-primary/80 hover:rotate-6']"
+    :class="['fixed top-8 left-8 z-50 font-manrope text-primary font-bold text-xl focus:outline-2 focus:outline-primary focus:outline-offset-2 rounded inline-block transition-all duration-300', activeLink === '#home' ? 'cursor-default' : 'hover:text-primary/80 hover:rotate-6']"
     data-section="home"
     @click.prevent="handleLogoClick"
   >
@@ -99,10 +103,11 @@ const handleLogoClick = () => {
   </NuxtLink>
   
   <button
+    v-if="isMobile"
     :aria-expanded="isMobileMenuOpen"
     :aria-label="t('nav.menuAria')"
     aria-controls="mobile-menu"
-    class="lg:hidden fixed top-8 right-8 z-50 p-2 flex flex-col gap-1.5 group focus:outline-2 focus:outline-primary focus:outline-offset-2 rounded transition-transform duration-300 hover:scale-110"
+    class="fixed top-8 right-8 z-50 p-2 flex flex-col gap-1.5 group focus:outline-2 focus:outline-primary focus:outline-offset-2 rounded transition-transform duration-300 hover:scale-110"
     @click="isMobileMenuOpen = !isMobileMenuOpen"
   >
     <span
@@ -126,20 +131,20 @@ const handleLogoClick = () => {
   </button>
   <Transition name="fade-modal">
     <div
-      v-if="isMobileMenuOpen"
-      class="lg:hidden fixed inset-0 z-40 bg-black/60 backdrop-blur-md"
+      v-if="isMobileMenuOpen && isMobile"
+      class="fixed inset-0 z-40 bg-black/60 backdrop-blur-md"
       @click="isMobileMenuOpen = false"
     />
   </Transition>
 
   <Transition name="scale-modal">
     <div
-      v-if="isMobileMenuOpen"
+      v-if="isMobileMenuOpen && isMobile"
       id="mobile-menu"
       role="dialog"
       aria-modal="true"
       aria-label="Menu de navigation"
-      class="lg:hidden fixed top-20 left-4 right-4 z-50 mx-auto bg-white/90 backdrop-blur-xl rounded-xl shadow-2xl p-6 max-w-sm"
+      class="fixed top-20 left-4 right-4 z-50 mx-auto bg-white/90 backdrop-blur-xl rounded-xl shadow-2xl p-6 max-w-sm"
       @click.stop
     >
       <nav class="flex flex-col gap-3 mb-6" role="menu" aria-label="Navigation du menu">

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useViewMode } from '~/composables/useViewMode'
 import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useHead } from "#app";
@@ -18,6 +19,7 @@ import { useHero4Observers } from "~/composables/useHero4Observers";
 
 const emit = defineEmits<{ "open-contact-modal": [] }>();
 
+const { isDesktop, isMobile } = useViewMode()
 const { t } = useI18n();
 const { handleSubmit, errors, formData } = useHero4Form();
 
@@ -110,7 +112,8 @@ const openModal = () => {
     />
 
     <div
-      class="relative z-10 w-full h-full flex flex-col lg:hidden items-center justify-start px-6 pt-6 pb-4"
+      v-if="isMobile"
+      class="relative z-10 w-full h-full flex flex-col items-center justify-start px-6 pt-6 pb-4"
     >
       <div
         :ref="refs.carousel"
@@ -229,7 +232,7 @@ const openModal = () => {
         {{ t('hero4.carousel.slideAnnouncement', { current: currentSlide + 1, total: 2 }) }}
       </div>
     </div>
-    <div class="hidden lg:block w-full h-full relative z-10">
+    <div v-if="isDesktop" class="w-full h-full relative z-10">
       <div class="max-w-7xl mx-auto px-8 pt-3 pb-12">
         <div class="bg-white/50 backdrop-blur-md rounded-lg p-8">
           <div class="mb-8">
@@ -392,13 +395,6 @@ section {
 
 :deep(.resize-none) {
   resize: none !important;
-}
-
-@media (max-width: 1023px) {
-  #contact {
-    min-width: 375px;
-    max-width: 430px;
-  }
 }
 
 .carousel-container {
