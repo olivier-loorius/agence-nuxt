@@ -35,7 +35,8 @@
       "Bash(del nul)",
       "Bash(if not exist \"tests\\unit\\homepage\\hero4\" mkdir testsunithomepagehero4)",
       "Bash(mkdir:*)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(del \"C:\\Users\\utilisateur\\Desktop\\agence-nuxt\\components\\homepage\\hero4\\Hero4Desktop.vue\" \"C:\\Users\\utilisateur\\Desktop\\agence-nuxt\\components\\homepage\\hero4\\Hero4Mobile.vue\")"
     ],
     "deny": [],
     "ask": []
